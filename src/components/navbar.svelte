@@ -1,10 +1,18 @@
+<script>
+	import Search from "./search.svelte";
+	let showSearch = $state(false)
+	function showSearchInput() {
+		// Lógica para mostrar el input de búsqueda
+		showSearch = !showSearch
+	}
+</script>
 <aside>
-    <h2 class="inter">Hola</h2>
+    <h2 class="inter">AnimeBeats</h2>
     <hr>
     <nav>
         <ul>
-            <li><a href="/"><i class="fa-solid fa-house verde"></i>Inicio</a></li>
-            <li><i class="fa-solid fa-magnifying-glass verde"></i>Buscar</li>
+            <a href="/"><li><i class="fa-solid fa-house verde"></i>Inicio</li></a>
+            <li onclick={showSearchInput}><i class="fa-solid fa-magnifying-glass verde"></i>Buscar</li>
             <li><i class="fa-solid fa-star verde"></i>Favoritos</li>
             <li><i class="fa-solid fa-list"></i>Mi lista</li>
             <li><i class="fa-solid fa-music"></i>OPs Favoritos</li>
@@ -15,6 +23,8 @@
         <span>Tu perfil</span>
     </div>
  </aside>
+	<!-- Aquí iría el input de búsqueda -->
+	<Search {showSearch} on:close={() => showSearch = false}/>
 <style>
     aside {
 		min-width: 220px;
@@ -83,4 +93,5 @@
 		border-radius: 50%;
 		background-color: #ccc; /* Placeholder */
 	}
+	
 </style>

@@ -13,7 +13,7 @@
 <div class="app-container">
   <Navbar />
   <main>
-    {@render children()}
+      {@render children()}
   </main>
 </div>
 
@@ -28,5 +28,7 @@
     flex-grow: 1;
     overflow-y: auto;
     height: 100vh;
+    
   }
+
 </style>
