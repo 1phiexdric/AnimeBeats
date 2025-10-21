@@ -31,10 +31,11 @@ query ($id: Int) {
 
 const url = 'https://graphql.anilist.co';
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageLoad = async ({ params, fetch }) => {
   const { id } = params;
 
   try {
+    // --- Fetch 1: Get the main anime details from AniList ---
     const options = {
       method: 'POST',
       headers: {
@@ -44,13 +45,31 @@ export const load: PageLoad = async ({ params }) => {
       body: JSON.stringify({ query, variables: { id } })
     };
 
-    const response = await fetch(url, options);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const detailsResponse = await fetch(url, options);
+    if (!detailsResponse.ok) throw new Error(`Failed to fetch from AniList: ${detailsResponse.statusText}`);
+    const detailsData = await detailsResponse.json();
+    const animeDetails = detailsData.data.Media;
 
-    return data.data.Media;
+    if (!animeDetails) {
+      throw new Error('Anime details not found in AniList response');
+    }
+
+    // --- Fetch 2: Get the anime themes from our own MongoDB API ---
+    const themeResponse = await fetch(`/anime/${id}/themes`);
+    const animeThemes = await themeResponse.json();
+
+    // --- Return both datasets combined ---
+    return {
+      animeDetails,
+      animeThemes
+    };
+
   } catch (err) {
-    console.error('Error al obtener datos de AniList:', err);
-    throw new Error('Failed to fetch anime data');
+    console.error('Error in page load function:', err);
+    // Return a safe object so the frontend doesn't crash
+    return {
+      animeDetails: null,
+      animeThemes: { openings: [], endings: [] }
+    };
   }
 };

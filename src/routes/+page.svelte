@@ -30,7 +30,7 @@
 
 <style>
   section{
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
   }
   .title-container{
     font-weight: 700;

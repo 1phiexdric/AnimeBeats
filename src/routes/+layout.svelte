@@ -2,6 +2,7 @@
   import "../app.css";
   import favicon from "$lib/assets/favicon.svg";
   import Navbar from "../components/navbar.svelte";
+  import MusicPlayer from "../components/MusicPlayer.svelte";
   let { children } = $props();
 
 </script>
@@ -25,10 +26,8 @@
   }
 
   main {
-    flex-grow: 1;
     overflow-y: auto;
-    height: 100vh;
-    
+    height: 100%;
   }
 
 </style>

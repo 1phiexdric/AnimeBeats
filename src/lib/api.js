@@ -1,80 +1,83 @@
-
-import fs from 'fs/promises';
-
-// 1. Define la consulta de GraphQL. 
-// Pide varios detalles de un medio (anime) buscado por un término de búsqueda.
-const query = `
-query ($search: String) {
-  Media (search: $search, type: ANIME) {
-    id
-    title {
-      romaji
-      english
-      native
+/**
+ * Example function to fetch a list of anime names from the AnimeThemes GraphQL API.
+ */
+export async function getAnimeThemes(name) {
+    const url = "https://graphql.animethemes.moe/";
+    const variables = {
+        search: name
     }
-    description(asHtml: false)
-    coverImage {
-      extraLarge
-      large
-      medium
-      color
-    }
-    bannerImage
-    averageScore
-    episodes
-    genres
-    studios {
-      nodes {
-        name
+    
+    // Consulta GraphQL corregida
+    const graphqlQuery = `
+      query ($search: String!) {
+        search(search: $search) {
+          anime {
+            name
+            animethemes {
+              slug
+              type
+              song {
+                title
+              }
+              
+              # CORRECCIÓN 1: El artista/banda está en 'group',
+              # que es un campo de 'AnimeTheme'.
+              group {
+                name
+              }
+              
+              # CORRECCIÓN 2: 'animethemeentries' es una LISTA,
+              # no una conexión (quitamos 'nodes').
+              animethemeentries {
+                # 'videos' SÍ es una conexión.
+                videos {
+                  nodes {
+                    basename
+                    link
+                    path
+                    resolution
+                    source
+                  }
+                }
+              }
+            }
+          }
+        }
       }
+    `
+
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            query: graphqlQuery,
+            variables
+        })
+    };
+
+    try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.errors) {
+            console.error("GraphQL Errors:", data.errors);
+            return []; 
+        }
+
+        return data; 
+
+    } catch (error) {
+        console.error("Error fetching anime list:", error);
+        return []; 
     }
-  }
 }
-`;
-
-// 2. Define las variables para la consulta.
-// Puedes cambiar 'Solo Leveling' por cualquier otro anime que quieras buscar.
-const variables = {
-  search: 'Solo Leveling'
-};
-
-// 3. Configura las opciones para la petición fetch.
-const url = 'https://graphql.anilist.co';
-const options = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
-  body: JSON.stringify({
-    query: query,
-    variables: variables
-  })
-};
-
-// 4. Realiza la petición a la API y maneja la respuesta.
-async function fetchAniListData() {
-  console.log(`Buscando datos para: "${variables.search}"...`);
-  try {
-    const response = await fetch(url, options);
-    
-    if (!response.ok) {
-      throw new Error(`Error HTTP! estado: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    console.log('Datos recibidos con éxito!');
-    
-    // 5. Escribe la respuesta en un archivo JSON para que puedas verla.
-    const outputPath = 'anilist-response.json'; // Se creará en la raíz del proyecto.
-    await fs.writeFile(outputPath, JSON.stringify(data, null, 2));
-    console.log(`La respuesta de la API se ha guardado en: ${outputPath}`);
-    
-    return data;
-  } catch (error) {
-    console.error('Error al obtener datos de AniList:', error);
-  }
-}
-
-// Ejecuta la función.
-fetchAniListData();
+const result = await getAnimeThemes("Demon slayer")
+console.log(JSON.stringify(result, null, 2));

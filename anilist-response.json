@@ -1,0 +1,49 @@
+{
+  "data": {
+    "Media": {
+      "id": 151807,
+      "title": {
+        "romaji": "Ore dake Level Up na Ken",
+        "english": "Solo Leveling",
+        "native": "俺だけレベルアップな件"
+      },
+      "description": "They say whatever doesn’t kill you makes you stronger, but that’s not the case for the world’s weakest hunter Seong Jin-U. After being brutally slaughtered by monsters in a high-ranking dungeon, Jin-U came back with the System, a program only he could see, that’s leveling him up in every way. Now, he’s inspired to discover the secrets behind his powers and the dungeon that spawned them.<br>\n<br>\n(Source: Crunchyroll) <br><br>",
+      "coverImage": {
+        "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-it355ZgzquUd.png",
+        "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151807-it355ZgzquUd.png",
+        "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151807-it355ZgzquUd.png",
+        "color": "#35bbf1"
+      },
+      "bannerImage": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/151807-37yfQA3ym8PA.jpg",
+      "averageScore": 82,
+      "episodes": 12,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Fantasy"
+      ],
+      "studios": {
+        "nodes": [
+          {
+            "name": "A-1 Pictures"
+          },
+          {
+            "name": "Aniplex"
+          },
+          {
+            "name": "Netmarble"
+          },
+          {
+            "name": "D&C MEDIA"
+          },
+          {
+            "name": "Kakao piccoma"
+          },
+          {
+            "name": "Crunchyroll"
+          }
+        ]
+      }
+    }
+  }
+}
