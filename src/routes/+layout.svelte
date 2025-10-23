@@ -13,9 +13,12 @@
 
 <div class="app-container">
   <Navbar />
-  <main>
-      {@render children()}
-  </main>
+  <div class="content-container">
+    <main>
+        {@render children()}
+    </main>
+    <MusicPlayer/>
+  </div>
 </div>
 
 <style>
@@ -25,7 +28,7 @@
     width: 100vw;
   }
 
-  main {
+  .content-container {
     overflow-y: auto;
     height: 100%;
   }
