@@ -1,7 +1,5 @@
 <script lang="ts">
   import AnimeCard from "../components/animeCard.svelte";
-  import { onMount } from "svelte";
-  import { fetchAniListPage } from "$lib/index";
   export let data
   let animes: Array<Object> = data.animes|| [];
   
@@ -30,7 +28,7 @@
 
 <style>
   section{
-    padding: 0.5rem 2rem;
+    padding: 1rem 1.5rem; /* Ajustado para móviles */
   }
   .title-container{
     font-weight: 700;
@@ -39,25 +37,46 @@
   }
   .title {
     color: var(--color-text-primary);
-    font-size: 2.5rem;
+    font-size: 2rem; /* Tamaño reducido para móviles */
     margin: 0;
   }
+  
+  /* Usando Grid para un layout más robusto */
   .animeCard-container{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
+    display: grid;
+    /* Crea columnas de mínimo 150px, y las ajusta para llenar el espacio */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px; /* Espacio entre tarjetas */
+    justify-items: center; /* Centra las tarjetas en sus celdas */
   }
+
   .show-more{
-    margin: 1rem auto;
+    margin: 2rem auto; /* Más margen superior */
     display: block;
     color: #fff;
+    background: none; /* Fondo transparente */
     border: none;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
     border-bottom: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
   }
   .show-more:hover{
     background-color: var(--color-background-hover);
   }
+
+  /* Media Query para pantallas más grandes */
+  @media (min-width: 768px) {
+    section {
+      padding: 2rem 3rem;
+    }
+    .title {
+      font-size: 2.5rem; /* Restaura el tamaño en pantallas grandes */
+    }
+    .animeCard-container {
+      gap: 25px;
+    }
+  }
+
 </style>

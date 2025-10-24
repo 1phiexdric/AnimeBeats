@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-
+import { playerStore } from '$lib/store/playerStore';
 const query = `
 query ($id: Int) {
   Media (id: $id, type: ANIME) {
@@ -32,6 +32,7 @@ query ($id: Int) {
 const url = 'https://graphql.anilist.co';
 
 export const load: PageLoad = async ({ params, fetch }) => {
+  playerStore.reset()
   const { id } = params;
 
   try {

@@ -64,4 +64,10 @@ figcaption {
 article:hover figcaption {
     opacity: 0;
 }
+@media(width < 720px){
+    article{
+      width: 130px; /* Larger card */
+    height: 200px;  
+    }
+}
 </style>

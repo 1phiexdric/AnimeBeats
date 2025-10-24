@@ -2,7 +2,6 @@
   import "../app.css";
   import favicon from "$lib/assets/favicon.svg";
   import Navbar from "../components/navbar.svelte";
-  import YoutubePlayer from "../components/youtubePlayer.svelte";
   let { children } = $props();
 
 </script>
@@ -22,13 +21,13 @@
 <style>
   .app-container {
     display: flex;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
   }
 
   main {
     overflow-y: auto;
-    height: 100%;
+    flex-grow: 1;
   }
 
 </style>

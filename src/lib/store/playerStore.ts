@@ -30,7 +30,9 @@ function togglePlayPause(){
         isPlaying: !state.isPlaying
     }))
 }
-
+function reset(){
+    set(initialState)
+}
 export const playerStore = {
-    subscribe, playVideo, togglePlayPause
+    subscribe, playVideo, togglePlayPause, reset
 }

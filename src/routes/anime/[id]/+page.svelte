@@ -96,25 +96,20 @@
 
   .banner-image {
     width: 100%;
-    height: 350px;
+    height: 200px; /* Altura reducida para móviles */
     object-fit: cover;
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   .details-content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 1rem 2rem;
+    align-items: center; /* Centra la portada en móvil */
+    gap: 1.5rem;
+    padding: 1rem;
     max-width: 1200px;
-    margin: -150px auto 0;
+    margin: -100px auto 0; /* Margen superior reducido */
     position: relative;
-  }
-
-  @media (min-width: 768px) {
-    .details-content {
-      flex-direction: row;
-    }
   }
 
   .cover-image-container {
@@ -122,24 +117,27 @@
   }
 
   .cover-image {
-    width: 225px;
+    width: 180px; /* Tamaño de portada reducido para móvil */
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
 
   .main-info {
     flex-grow: 1;
+    text-align: center; /* Centra el texto en móvil */
   }
 
   h1 {
-    font-size: 2.8rem;
+    font-size: 2rem; /* Tamaño de fuente reducido */
     font-weight: 800;
     margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   }
 
   .genres {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra los géneros */
     gap: 0.5rem;
     margin-bottom: 1.5rem;
   }
@@ -148,12 +146,12 @@
     background-color: rgba(255, 255, 255, 0.1);
     padding: 0.3rem 0.7rem;
     border-radius: 15px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 600;
   }
 
   h2 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
@@ -163,6 +161,7 @@
 
   .description {
     line-height: 1.6;
+    text-align: left; /* Mantiene la descripción alineada a la izquierda */
   }
 
   .additional-info {
@@ -170,6 +169,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    text-align: left; /* Mantiene esto alineado a la izquierda */
   }
 
   .additional-info p,
@@ -183,9 +183,10 @@
     list-style-type: none;
     padding-left: 0;
   }
-  /* New styles for themes section */
+
+  /* --- Seccion de Temas --- */
   .themes-section {
-    padding: 2rem;
+    padding: 1rem;
     max-width: 1200px;
     margin: 0 auto;
     color: #fff;
@@ -201,43 +202,44 @@
     gap: 2rem;
   }
 
-  @media (min-width: 768px) {
-    .themes-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
   .theme-list h3 {
     font-size: 1.3rem;
     margin-bottom: 1rem;
   }
 
-  .theme-list ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
 
-  .theme-list li {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .theme-list a {
-    color: var(--color-accent);
-    text-decoration: none;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 0.3rem 0.7rem;
-    border-radius: 5px;
-    transition: background-color 0.2s;
-  }
-
-  .theme-list a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  /* --- Media Queries para Pantallas Grandes --- */
+  @media (min-width: 768px) {
+    .banner-image {
+      height: 350px; /* Restaura altura del banner */
+    }
+    .details-content {
+      flex-direction: row; /* Vuelve a dos columnas */
+      align-items: flex-start; /* Alinea al inicio */
+      gap: 2rem;
+      padding: 1rem 2rem;
+      margin: -150px auto 0;
+    }
+    .cover-image {
+      width: 225px;
+    }
+    .main-info {
+      text-align: left; /* Alinea el texto a la izquierda */
+    }
+    h1 {
+      font-size: 2.8rem;
+    }
+    h2 {
+      font-size: 1.6rem;
+    }
+    .genres {
+      justify-content: flex-start; /* Alinea géneros a la izquierda */
+    }
+    .themes-section {
+      padding: 2rem;
+    }
+    .themes-grid {
+      grid-template-columns: 1fr 1fr; /* Dos columnas para los temas */
+    }
   }
 </style>
