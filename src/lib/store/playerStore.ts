@@ -1,36 +1,26 @@
 import { writable } from "svelte/store";
 
-export type Track = {
-    title: string;
-    artist: string;
-    audioUrl: string;
-}
-
+/**
+ * Represents the state of the video player, including the current video ID and playback status.
+ * Used to manage and track player state within the application.
+ */
 export type PlayerState = {
-    currentTrack: Track | null;
-    isPlaying: boolean;
-    currentTime: number;
-    duration: number;
-    volume: number// 0 y 1
+    videoId: string | null;
+    isPlaying: boolean
 }
 
 const initialState: PlayerState = {
-    currentTrack: null,
-    isPlaying: false,
-    currentTime: 0,
-    duration: 0,
-    volume: 1
+    videoId: null,
+    isPlaying: false
 }
 
 const {subscribe, set, update} = writable<PlayerState>(initialState)
 
-function playTrack(track: Track){
-    update(state => ({
+function playVideo(videoId: string){
+    update(state=>({
         ...state,
-        currentTrack: track,
-        isPlaying: true,
-        currentTime: 0,
-        duration: 0
+        videoId: videoId,
+        isPlaying: true
     }))
 }
 
@@ -41,24 +31,6 @@ function togglePlayPause(){
     }))
 }
 
-function seek(time: number){
-    update(state => ({
-        ...state,
-        currentTime: time
-    }))
-}
-
-function setVolume(level: number){
-    update(state => ({
-        ...state,
-        volume: Math.max(0, Math.min(1, level))
-    }))
-}
-
 export const playerStore = {
-    subscribe,
-    playTrack,
-    togglePlayPause,
-    seek,
-    setVolume
+    subscribe, playVideo, togglePlayPause
 }

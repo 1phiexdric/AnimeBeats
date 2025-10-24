@@ -1,6 +1,6 @@
 <script lang="ts">
   import ThemeCard from '../../../components/themeCard.svelte';
-
+  import YoutubePlayer from '../../../components/youtubePlayer.svelte';
   export let data;
   let { animeDetails, animeThemes } = data;
   console.log(animeThemes);
@@ -49,6 +49,7 @@
       </div>
     </div>
   </section>
+  {#if animeThemes.openings || animeThemes.endings}
 <section class="themes-section">
   <h2 class="inter">Themes</h2>
   <div class="themes-grid">
@@ -56,24 +57,26 @@
       <h3>Openings</h3>
       {#if animeThemes.openings}
       {#each animeThemes.openings as op}
-        <ThemeCard {...op} />
+      <ThemeCard {...op} />
       {/each}
       {:else}
-        <p>No openings found.</p>
+      <p>No openings found.</p>
       {/if}
     </div>
     <div class="theme-list">
       <h3>Endings</h3>
       {#if animeThemes.endings}
       {#each animeThemes.endings as ed}
-        <ThemeCard {...ed} />
+      <ThemeCard {...ed} />
       {/each}
       {:else}
-        <p>No openings found.</p>
+      <p>No openings found.</p>
       {/if}
     </div>
   </div>
+  <YoutubePlayer/>
 </section>
+{/if}
 {:else}
   <p class="inter" style="text-align: center; padding: 2rem;">
     Anime not found or failed to load.

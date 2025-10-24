@@ -2,7 +2,7 @@
   import "../app.css";
   import favicon from "$lib/assets/favicon.svg";
   import Navbar from "../components/navbar.svelte";
-  import MusicPlayer from "../components/MusicPlayer.svelte";
+  import YoutubePlayer from "../components/youtubePlayer.svelte";
   let { children } = $props();
 
 </script>
@@ -13,12 +13,10 @@
 
 <div class="app-container">
   <Navbar />
-  <div class="content-container">
     <main>
         {@render children()}
+        
     </main>
-    <MusicPlayer/>
-  </div>
 </div>
 
 <style>
@@ -28,7 +26,7 @@
     width: 100vw;
   }
 
-  .content-container {
+  main {
     overflow-y: auto;
     height: 100%;
   }
