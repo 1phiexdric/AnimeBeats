@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../app.css";
-  import favicon from "$lib/assets/favicon.svg";
+  import favicon from "$lib/assets/animeBeats.ico";
   import Navbar from "../components/navbar.svelte";
   let { children } = $props();
 
