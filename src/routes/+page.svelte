@@ -78,5 +78,11 @@
       gap: 25px;
     }
   }
+  @media(width <720px){
+    .title{
+      margin-top: 50px;
+      text-align: center;
+    }
+  }
 
 </style>

@@ -1,1 +1,2 @@
-mongodb://svelte_user:29032610@localhost:27017/animeBeats
+proxima tarea:
+- agregar traduccion con la api de libretranslate para la description

@@ -33,12 +33,12 @@
             <span class="genre">{genre}</span>
           {/each}
         </div>
-        <h2 class="inter">Description</h2>
+        <h2 class="inter">Descripción</h2>
         <div class="description">{@html animeDetails.description}</div>
         <div class="additional-info">
-          <p><strong>Episodes:</strong> {animeDetails.episodes}</p>
+          <p><strong>Episodios:</strong> {animeDetails.episodes}</p>
           <div>
-            <strong>Studios:</strong>
+            <strong>Estudios:</strong>
             <ul>
               {#each animeDetails.studios.nodes as studio}
                 <li>{studio.name}</li>
@@ -51,7 +51,7 @@
   </section>
   {#if animeThemes.openings || animeThemes.endings}
 <section class="themes-section">
-  <h2 class="inter">Themes</h2>
+  <h2 class="inter">Canciones</h2>
   <div class="themes-grid">
     <div class="theme-list">
       <h3>Openings</h3>

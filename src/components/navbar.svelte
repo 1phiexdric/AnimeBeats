@@ -27,8 +27,8 @@
   <hr />
   <nav>
     <ul>
-      <a href="/"><li><i class="fa-solid fa-house verde"></i>Inicio</li></a>
-      <li onclick={showSearchInput}>
+      <a href="/" onclick={()=>{showMenu = !showMenu}}><li><i class="fa-solid fa-house verde"></i>Inicio</li></a>
+      <li onclick={()=>{showSearchInput(); showMenu = !showMenu}}>
         <i class="fa-solid fa-magnifying-glass verde"></i>Buscar
       </li>
       <li><i class="fa-solid fa-star verde"></i>Favoritos</li>
