@@ -1,38 +1,41 @@
-# sv
+# AnimeBeats
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+AnimeBeats es una aplicación web creada con SvelteKit que te permite explorar y escuchar los temas musicales (openings y endings) de tus animes favoritos.
 
-## Creating a project
+## Funcionalidades Principales
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Explora Animes Populares:** Descubre una lista de animes populares desde la página de inicio.
+- **Busca tu Anime:** Utiliza la función de búsqueda para encontrar un anime específico por su nombre.
+- **Escucha Temas Musicales:** Accede a la página de detalles de un anime para ver y escuchar todos sus temas musicales.
+- **Reproductor Integrado:** Reproduce los temas musicales directamente en la página gracias a un reproductor de YouTube integrado.
+- **Diseño Responsivo:** Disfruta de una experiencia de usuario fluida tanto en dispositivos de escritorio como en móviles.
 
-```sh
-# create a new project in the current directory
-npx sv create
+## Cómo Funciona
 
-# create a new project in my-app
-npx sv create my-app
-```
+AnimeBeats utiliza las siguientes APIs para obtener la información:
 
-## Developing
+- **[AniList API](https://anilist.gitbook.io/anilist-apiv2-docs/):** Para obtener la información de los animes, como el título, la portada, etc.
+- **[AnimeThemes.moe API](https://animethemes.moe/):** Para obtener los temas musicales de cada anime.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Tecnologías Utilizadas
 
-```sh
-npm run dev
+- **[SvelteKit](https://kit.svelte.dev/):** Un framework de desarrollo web para construir aplicaciones rápidas y robustas.
+- **[Vite](https://vitejs.dev/):** Una herramienta de construcción de frontend moderna y rápida.
+- **[Tailwind CSS](https://tailwindcss.com/):** Un framework de CSS para un diseño rápido y personalizado.
+- **[TypeScript](https://www.typescriptlang.org/):** Un superconjunto de JavaScript que añade tipado estático.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Instalación y Uso
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+1.  Clona el repositorio:
+    ```bash
+    git clone https://github.com/tu-usuario/anime-beats.git
+    ```
+2.  Instala las dependencias:
+    ```bash
+    pnpm install
+    ```
+3.  Inicia el servidor de desarrollo:
+    ```bash
+    pnpm dev
+    ```
+4.  Abre tu navegador y visita `http://localhost:5173`.

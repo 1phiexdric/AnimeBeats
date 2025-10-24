@@ -23,7 +23,7 @@
 </div>
 </div>
 <aside class:open={showMenu}>
-	<h2 class="inter">AnimeBeats</h2>
+	<h2 class="inter" translate="no">AnimeBeats</h2>
   <hr />
   <nav>
     <ul>
@@ -36,9 +36,12 @@
       <li><i class="fa-solid fa-music"></i>OPs Favoritos</li>
     </ul>
   </nav>
-  <div class="tu_perfil">
-    <!-- <img src="/favicon.svg" alt="logo de la pagina"> -->
+  <div class="botton-content">
+    <div class="gtranslate_wrapper"></div>
+    <div class="tu_perfil">
+    <img src="/user.jpg" alt="logo de la pagina">
     <span>Tu perfil</span>
+  </div>
   </div>
 </aside>
 <!-- Aquí iría el input de búsqueda -->
@@ -69,6 +72,7 @@
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
+    border-right: 2px solid var(--color-border);
     transition: transform 0.3s ease-in-out; /* Transición para el deslizamiento */
   }
   h2 {
@@ -115,6 +119,13 @@
   }
   .verde {
     color: var(--color-accent);
+  }
+  .botton-content{
+    margin-top: auto;
+  }
+  .gtranslate_wrapper{
+    display: flex;
+    justify-content: center;
   }
   .tu_perfil {
     margin-top: auto; /* Pushes to the bottom */

@@ -26,8 +26,8 @@
       <i class="fa-solid fa-play"></i>
     </button>
     <div class="text-content">
-      <h3>{titulo} - OP:{numero}</h3>
-      <p class="metadata artist">{artista}</p>
+      <h3 translate="no">{titulo} - OP:{numero}</h3>
+      <p class="metadata artist" translate="no">{artista}</p>
       <p class="metadata">Episodios: {episodios}</p>
     </div>
   </div>

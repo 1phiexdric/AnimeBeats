@@ -7,13 +7,14 @@
     const nextPage = Math.floor(animes.length / 12) + 1;
     const res = await fetch('/api/anime?page=' + nextPage)
     const newAnimes = await res.json();
+    console.log(newAnimes);
     animes = [...animes, ...newAnimes];
   }
 </script>
 
 <section>
     <div class="title-container">
-      <h1 class="title inter">AnimeBeats</h1>
+      <h1 class="title inter" translate="no">AnimeBeats</h1>
       <div class="separador"></div>
     </div>
     <div class="animeCard-container">

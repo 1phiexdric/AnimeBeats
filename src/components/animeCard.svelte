@@ -5,8 +5,8 @@
 <article>
     <figure>
         <img src={anime.coverImage.extraLarge} alt="portada del anime"/>
-        <figcaption class="inter">
-            {anime.title.english}
+        <figcaption class="inter" translate="no">
+            {anime.title.romaji}
         </figcaption>
     </figure>
 </article>

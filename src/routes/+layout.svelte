@@ -11,6 +11,7 @@
 </svelte:head>
 
 <div class="app-container">
+  
   <Navbar />
     <main>
         {@render children()}

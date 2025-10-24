@@ -6,7 +6,8 @@ query ($page: Int, $perPage: Int) {
     media(type: ANIME, sort: POPULARITY_DESC) {
       id
       title {
-        english
+        english,
+        romaji
       }
       coverImage {
         extraLarge

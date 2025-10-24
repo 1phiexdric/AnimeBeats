@@ -1,8 +1,33 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { afterNavigate } from '$app/navigation';
   import ThemeCard from '../../../components/themeCard.svelte';
   import YoutubePlayer from '../../../components/youtubePlayer.svelte';
   export let data;
   let { animeDetails, animeThemes } = data;
+  
+    // scroll al top del contenedor que hace scroll (layout main)
+  function scrollToTop(behavior: ScrollBehavior = 'auto') {
+    // intenta primero el main del layout
+    const main = document.querySelector('main');
+    if (main && 'scrollTo' in main) {
+      (main as HTMLElement).scrollTo({ top: 0, behavior });
+      return;
+    }
+    // fallback al window (si tu layout no usa main con overflow)
+    window.scrollTo({ top: 0, behavior });
+  }
+
+  onMount(() => {
+    // en la primera carga forzamos arriba
+    scrollToTop('auto');
+  });
+
+  afterNavigate(() => {
+    // cuando navegues internamente también forzamos arriba (usa smooth si quieres)
+    // se usa setTimeout 0 para garantizar que el DOM esté renderizado
+    setTimeout(() => scrollToTop('smooth'), 0);
+  });
   console.log(animeThemes);
 </script>
 
@@ -11,6 +36,9 @@
     class="anime-details-container"
     style="--anime-color: {animeDetails.coverImage.color}"
   >
+    <a href="/" class="btn-backward" aria-label="return to home btn">
+    <i class="fa-solid fa-backward"></i>
+  </a>
     <div class="banner-container">
       <img
         src={animeDetails.bannerImage}
@@ -27,7 +55,7 @@
         />
       </div>
       <div class="main-info">
-        <h1 class="inter">{animeDetails.title.english}</h1>
+        <h1 class="inter" translate="no">{animeDetails.title.romaji}</h1>
         <div class="genres">
           {#each animeDetails.genres as genre}
             <span class="genre">{genre}</span>
@@ -92,6 +120,21 @@
     );
     color: #fff;
     padding-bottom: 2rem;
+  }
+  .btn-backward{
+    position: absolute;
+    margin-top: 60px;
+    margin-left: 20px;
+    color: white;
+    font-size: 1.5rem;
+    background-color: #333;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
   }
 
   .banner-image {
