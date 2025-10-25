@@ -57,5 +57,3 @@ export const load: PageServerLoad = async({setHeaders})=>{
         throw error(500, 'Internal Server Error');
     }
 }
-
-export { fetchAniListPage };
