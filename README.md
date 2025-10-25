@@ -29,6 +29,7 @@ AnimeBeats utiliza las siguientes APIs para obtener la información:
 
 - **[SvelteKit](https://kit.svelte.dev/):** Un framework de desarrollo web para construir aplicaciones rápidas y robustas.
 - **[Vite](https://vitejs.dev/):** Una herramienta de construcción de frontend moderna y rápida.
+- **[Tailwind CSS](https://tailwindcss.com/):** Un framework de CSS para un diseño rápido y personalizado.
 - **[TypeScript](https://www.typescriptlang.org/):** Un superconjunto de JavaScript que añade tipado estático.
 
 ## Instalación y Uso
