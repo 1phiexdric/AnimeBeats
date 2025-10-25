@@ -36,7 +36,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
   const { id } = params;
 
   try {
-    // --- Fetch 1: Get the main anime details from AniList ---
+    // --- Fetch 1: Obtener los detalles principales del anime de AniList ---
     const options = {
       method: 'POST',
       headers: {
@@ -55,17 +55,17 @@ export const load: PageLoad = async ({ params, fetch }) => {
       throw new Error('Anime details not found in AniList response');
     }
 
-    // --- Fetch 2: Get the anime themes from our own MongoDB API ---
+    // --- Fetch 2: Obtener los temas de anime de nuestra propia API de MongoDB ---
     let animeThemes = { openings: [], endings: [] }; // Default value
     const themeResponse = await fetch(`/anime/${id}/themes`);
     if (themeResponse.ok) {
       animeThemes = await themeResponse.json();
     } else {
-      // Log a warning but don't crash the page
+      // Registrar una advertencia pero no bloquear la página
       console.warn(`Themes not found for anime ID ${id} (status: ${themeResponse.status}), proceeding without them.`);
     }
 
-    // --- Return both datasets combined ---
+    // --- Devolver ambos conjuntos de datos combinados ---
     return {
       animeDetails,
       animeThemes
@@ -73,7 +73,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
   } catch (err) {
     console.error('Error in page load function:', err);
-    // Return a safe object so the frontend doesn't crash
+    // Devolver un objeto seguro para que el frontend no se bloquee
     return {
       animeDetails: null,
       animeThemes: { openings: [], endings: [] }

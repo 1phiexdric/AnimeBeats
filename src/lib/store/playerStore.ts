@@ -1,8 +1,8 @@
 import { writable } from "svelte/store";
 
 /**
- * Represents the state of the video player, including the current video ID and playback status.
- * Used to manage and track player state within the application.
+ * Representa el estado del reproductor de video, incluyendo el ID del video actual y el estado de reproducción.
+ * Se utiliza para gestionar y rastrear el estado del reproductor dentro de la aplicación.
  */
 export type PlayerState = {
     videoId: string | null;

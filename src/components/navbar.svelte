@@ -106,7 +106,7 @@
   }
   nav ul li i {
     margin-right: 1rem;
-    width: 20px; /* Align icons */
+    width: 20px; /* Alinear íconos */
     text-align: center;
   }
   nav ul li:hover {
@@ -125,7 +125,7 @@
     justify-content: center;
   }
   .tu_perfil {
-    margin-top: auto; /* Pushes to the bottom */
+    margin-top: auto; /* Empuja hacia abajo */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -141,7 +141,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: #ccc; /* Placeholder */
+    background-color: #ccc; /* Marcador de posición */
   }
 
   /* --- RESPONSIVE STYLES --- */

@@ -49,8 +49,8 @@
 <style>
   article {
     background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid transparent; /* Start with a transparent border */
-    border-radius: 12px; /* Slightly larger radius */
+    border: 1px solid transparent; /* Comienza con un borde transparente */
+    border-radius: 12px; /* Radio ligeramente más grande */
     padding: 1rem;
     margin: 0.5rem 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -64,7 +64,7 @@
 
   article:hover {
     transform: translateY(-3px);
-    border-color: var(--color-accent); /* Glow effect on hover */
+    border-color: var(--color-accent); /* Efecto de brillo al pasar el mouse */
   }
 
   .main-content {
@@ -86,7 +86,7 @@
     transition:
       background-color 0.3s ease,
       transform 0.3s ease;
-    flex-shrink: 0; /* Prevent button from shrinking */
+    flex-shrink: 0; /* Evita que el botón se encoja */
   }
 
   .play-button i {
@@ -131,7 +131,7 @@
   }
 
   .youtube-link:hover {
-    color: #ff0000; /* YouTube Red */
+    color: #ff0000; /* Rojo de YouTube */
     transform: scale(1.1);
   }
 </style>
