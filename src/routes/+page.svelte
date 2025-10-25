@@ -99,21 +99,6 @@
     justify-items: center; /* Centra las tarjetas en sus celdas */
   }
 
-  .show-more {
-    margin: 2rem auto; /* Más margen superior */
-    display: block;
-    color: #fff;
-    background: none; /* Fondo transparente */
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    border-bottom: 1px solid var(--color-border);
-    padding: 0.5rem 1rem;
-  }
-  .show-more:hover {
-    background-color: var(--color-background-hover);
-  }
   .filtros {
     display: flex;
     justify-content: center;
