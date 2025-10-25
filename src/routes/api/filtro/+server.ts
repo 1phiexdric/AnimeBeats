@@ -4,7 +4,10 @@ import { buildBatchQuery } from "$lib/server/anilist_utils";
 
 const ANILIST_URL = 'https://graphql.anilist.co';
 
-export async function GET({url}): Promise<any> {
+export async function GET({url, setHeaders}): Promise<any> {
+    setHeaders({
+        'cache-control': 'public, max-age=600'
+    });
     const tipo = url.searchParams.get('tipo')
     const collection = await getTemasCollection()
     let queryType = {}
@@ -14,7 +17,6 @@ export async function GET({url}): Promise<any> {
     const temasCurados = await collection.find({
         ...queryType
     }).toArray()
-    console.log(temasCurados);
     const ids = temasCurados.map((item: any) => item.anilist_id)
     
     const query = buildBatchQuery(ids)
@@ -27,7 +29,6 @@ export async function GET({url}): Promise<any> {
       body: JSON.stringify({query})
     })
     const result = await anilistResponse.json()
-    console.log(result);
     const bacthData = result.data;
     const animes = Object.keys(bacthData).map(key => {
     const anime = bacthData[key];

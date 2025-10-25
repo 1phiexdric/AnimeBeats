@@ -6,9 +6,6 @@
     // Lógica para mostrar el input de búsqueda
     showSearch = !showSearch;
   }
-  $effect(()=>{
-	console.log(showMenu);
-  })
 </script>
 
 <div class="main">

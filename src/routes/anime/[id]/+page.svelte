@@ -4,7 +4,7 @@
   import ThemeCard from '../../../components/themeCard.svelte';
   import YoutubePlayer from '../../../components/youtubePlayer.svelte';
   export let data;
-  let { animeDetails, animeThemes } = data;
+  $: ({ animeDetails, animeThemes } = data);
   
     // scroll al top del contenedor que hace scroll (layout main)
   function scrollToTop(behavior: ScrollBehavior = 'auto') {
@@ -28,7 +28,6 @@
     // se usa setTimeout 0 para garantizar que el DOM esté renderizado
     setTimeout(() => scrollToTop('smooth'), 0);
   });
-  console.log(animeThemes);
 </script>
 
 {#if animeDetails}
@@ -83,9 +82,9 @@
   <div class="themes-grid">
     <div class="theme-list">
       <h3>Openings</h3>
-      {#if animeThemes.openings}
+      {#if animeThemes.openings.length >0}
       {#each animeThemes.openings as op}
-      <ThemeCard {...op} />
+      <ThemeCard {...(op as any)} />
       {/each}
       {:else}
       <p>No openings found.</p>
@@ -93,16 +92,18 @@
     </div>
     <div class="theme-list">
       <h3>Endings</h3>
-      {#if animeThemes.endings}
+      {#if animeThemes.endings.length > 0}
       {#each animeThemes.endings as ed}
-      <ThemeCard {...ed} />
+      <ThemeCard {...(ed as any)} />
       {/each}
       {:else}
-      <p>No openings found.</p>
+      <p>No endings found.</p>
       {/if}
     </div>
   </div>
-  <YoutubePlayer/>
+  {#if animeThemes?.openings?.length > 0 || animeThemes?.endings?.length > 0}
+    <YoutubePlayer />
+  {/if}
 </section>
 {/if}
 {:else}

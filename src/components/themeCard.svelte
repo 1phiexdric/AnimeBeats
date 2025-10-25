@@ -1,7 +1,7 @@
 <script lang="ts">
   import { playerStore } from "$lib/store/playerStore";
 
-  let { titulo, numero, enlace_youtube, artista, episodios } =
+  let { titulo, numero, enlace_youtube, artista, episodios, version } =
     $props();
   function playTheme(id: any) {
     if (id) {
@@ -14,7 +14,6 @@
     const match = url.match(regex);
     return match ? match[1] : null;
   }
-  console.log( extractYouTubeVideoId(enlace_youtube))
 </script>
 
 <article>
@@ -29,6 +28,9 @@
       <h3 translate="no">{titulo} - OP:{numero}</h3>
       <p class="metadata artist" translate="no">{artista}</p>
       <p class="metadata">Episodios: {episodios}</p>
+      {#if version}
+        <p class="metadata">version: {version}</p>
+      {/if}
     </div>
   </div>
   {#if enlace_youtube}

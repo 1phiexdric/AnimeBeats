@@ -56,8 +56,14 @@ export const load: PageLoad = async ({ params, fetch }) => {
     }
 
     // --- Fetch 2: Get the anime themes from our own MongoDB API ---
+    let animeThemes = { openings: [], endings: [] }; // Default value
     const themeResponse = await fetch(`/anime/${id}/themes`);
-    const animeThemes = await themeResponse.json();
+    if (themeResponse.ok) {
+      animeThemes = await themeResponse.json();
+    } else {
+      // Log a warning but don't crash the page
+      console.warn(`Themes not found for anime ID ${id} (status: ${themeResponse.status}), proceeding without them.`);
+    }
 
     // --- Return both datasets combined ---
     return {

@@ -1,4 +1,5 @@
 import type { PageServerLoad } from "./$types";
+import { error } from "@sveltejs/kit";
 
 const query = `
 query ($page: Int, $perPage: Int) {
@@ -39,6 +40,7 @@ async function fetchAniListPage(page: number, perPage: number) {
     return data;
   } catch (err) {
     console.error('Error al obtener datos de AniList:', err);
+    throw err;
   }
 }
 
@@ -46,9 +48,13 @@ export const load: PageServerLoad = async({setHeaders})=>{
     setHeaders({
         'cache-control': 'public, max-age=600'
     })
-    const animes = await fetchAniListPage(1, 12)
-    return {
-        animes: animes.data.Page.media
+    try {
+        const animes = await fetchAniListPage(1, 12)
+        return {
+            animes: animes.data.Page.media
+        }
+    } catch (err) {
+        throw error(500, 'Internal Server Error');
     }
 }
 

@@ -3,7 +3,8 @@
   import { onMount } from "svelte";
   // export let data
   let animes: Array<Object> = [];
-  
+
+    let selectedTipo : String|null = "todos"
   // async function loadMore() {
   //   const nextPage = Math.floor(animes.length / 12) + 1;
   //   const res = await fetch('/api/anime?page=' + nextPage)
@@ -11,47 +12,74 @@
   //   console.log(newAnimes);
   //   animes = [...animes, ...newAnimes];
   // }
-  async function loadAnimeData(tipo?: string){
-    const url = tipo ? `/api/filtro?tipo=${tipo}` : '/api/filtro';
-    const responseCurados = await fetch(url)
-    const listaCurada = await responseCurados.json()
+  async function loadAnimeData(tipo?: string) {
+    const url = tipo ? `/api/filtro?tipo=${tipo}` : "/api/filtro";
+    const responseCurados = await fetch(url);
+    const listaCurada = await responseCurados.json();
     console.log(`Cargados ${listaCurada.length} ítems.`);
     animes = [...listaCurada];
   }
-  function handleFilter(tipo:string){
-    loadAnimeData(tipo)
+  function handleFilter(tipo: string) {
+    loadAnimeData(tipo);
   }
-  onMount(()=>{
-    loadAnimeData()
-  })
+  onMount(() => {
+    loadAnimeData();
+  });
 </script>
 
 <section>
-    <div class="title-container">
-      <h1 class="title inter" translate="no">AnimeBeats</h1>
-      <div class="filtros">
-        <button onclick={() => loadAnimeData()}>Todos</button>
-        <button onclick={()=>{handleFilter("anime_japones")}}>anime</button>
-        <button onclick={()=>{handleFilter("")}}>Donghua</button>
-        <button onclick={()=>{handleFilter("aeni")}}>Aeni</button>
-      </div>
-      <div class="separador"></div>
+  <div class="title-container">
+    <h1 class="title inter" translate="no">AnimeBeats</h1>
+    <div class="filtros">
+      <button onclick={() => {
+        selectedTipo = 'todos'
+        
+        loadAnimeData()}}
+        class:selected={selectedTipo === "todos"}
+        aria-pressed={selectedTipo === "todos"}>Todos</button>
+      <button
+        onclick={() => {
+          selectedTipo = 'anime'
+          handleFilter("anime_japones");
+        }}
+        class:selected={selectedTipo==='anime'}
+        aria-pressed={selectedTipo === "anime"}
+        >anime</button
+      >
+      <button
+        onclick={() => {
+          selectedTipo = 'donghua'
+          handleFilter("donghua");
+        }}
+        class:selected={selectedTipo==='donghua'}
+        aria-pressed={selectedTipo === 'donghua'}
+        >Donghua</button
+      >
+      <button
+        onclick={() => {
+          selectedTipo = 'aeni'
+          handleFilter("aeni");
+        }}
+        class:selected={selectedTipo==='aeni'}
+        aria-pressed={selectedTipo === 'aeni'}
+        >Aeni</button
+      >
     </div>
-    <div class="animeCard-container">
-      {#each animes as anime}
-      <AnimeCard {anime}/>
-      
-      {/each}
-
-    </div>
-    <!-- <button class="show-more" onclick={loadMore}>&darr;Show more</button> -->
+    <div class="separador"></div>
+  </div>
+  <div class="animeCard-container">
+    {#each animes as anime}
+      <AnimeCard {anime} />
+    {/each}
+  </div>
+  <!-- <button class="show-more" onclick={loadMore}>&darr;Show more</button> -->
 </section>
 
 <style>
-  section{
+  section {
     padding: 1rem 1.5rem; /* Ajustado para móviles */
   }
-  .title-container{
+  .title-container {
     font-weight: 700;
     letter-spacing: 2px;
     margin-bottom: 2rem;
@@ -61,9 +89,9 @@
     font-size: 2rem; /* Tamaño reducido para móviles */
     margin: 0;
   }
-  
+
   /* Usando Grid para un layout más robusto */
-  .animeCard-container{
+  .animeCard-container {
     display: grid;
     /* Crea columnas de mínimo 150px, y las ajusta para llenar el espacio */
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -71,7 +99,7 @@
     justify-items: center; /* Centra las tarjetas en sus celdas */
   }
 
-  .show-more{
+  .show-more {
     margin: 2rem auto; /* Más margen superior */
     display: block;
     color: #fff;
@@ -83,7 +111,7 @@
     border-bottom: 1px solid var(--color-border);
     padding: 0.5rem 1rem;
   }
-  .show-more:hover{
+  .show-more:hover {
     background-color: var(--color-background-hover);
   }
   .filtros {
@@ -129,14 +157,17 @@
       gap: 25px;
     }
   }
-  @media(width <720px){
-    .title{
+  @media (width <720px) {
+    .title {
       margin-top: 50px;
       text-align: center;
     }
-    .separador{
+    .separador {
       width: 100%;
     }
+    .filtros button {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.3rem;
+    }
   }
-
 </style>

@@ -21,7 +21,9 @@
                     iv_load_policy: 3,
                     modestbranding:1,
                     showinfo: 0,
-                    rel: 0 // No mostrar videos relacionados al final
+                    rel: 0, // No mostrar videos relacionados al final
+                    enablejsapi: 1, // Habilitar la API de JavaScript
+                    origin: window.location.origin // Origen para la seguridad
                 },
                 events: {
                     'onReady': () => { 
