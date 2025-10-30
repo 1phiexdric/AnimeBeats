@@ -1,30 +1,34 @@
 <script lang="ts">
   import AnimeCard from "../components/animeCard.svelte";
   import { onMount } from "svelte";
+  import Loader from "../components/loader.svelte";
+  import { fade } from "svelte/transition";
   // export let data
-  let animes: Array<Object> = [];
-
-    let selectedTipo : String|null = "todos"
-  // async function loadMore() {
-  //   const nextPage = Math.floor(animes.length / 12) + 1;
-  //   const res = await fetch('/api/anime?page=' + nextPage)
-  //   const newAnimes = await res.json();
-  //   console.log(newAnimes);
-  //   animes = [...animes, ...newAnimes];
-  // }
-  async function loadAnimeData(tipo?: string) {
-    const url = tipo ? `/api/filtro?tipo=${tipo}` : "/api/filtro";
-    const responseCurados = await fetch(url);
-    const listaCurada = await responseCurados.json();
-    console.log(`Cargados ${listaCurada.length} ítems.`);
-    animes = [...listaCurada];
-  }
-  function handleFilter(tipo: string) {
-    loadAnimeData(tipo);
-  }
-  onMount(() => {
-    loadAnimeData();
-  });
+  let animes: Array<Object> = $state([]);
+    let selectedTipo : String|null = $state("todos")
+    const loopArray = Array(20).fill(null);
+    // async function loadMore() {
+      //   const nextPage = Math.floor(animes.length / 12) + 1;
+      //   const res = await fetch('/api/anime?page=' + nextPage)
+      //   const newAnimes = await res.json();
+      //   console.log(newAnimes);
+      //   animes = [...animes, ...newAnimes];
+      // }
+      async function loadAnimeData(tipo?: string) {
+        animes = [];
+        const url = tipo ? `/api/filtro?tipo=${tipo}` : "/api/filtro";
+        const responseCurados = await fetch(url);
+        const listaCurada = await responseCurados.json();
+        console.log(`Cargados ${listaCurada.length} ítems.`);
+        animes = [...listaCurada];
+      }
+      function handleFilter(tipo: string) {
+        loadAnimeData(tipo);
+      }
+      onMount(() => {
+        loadAnimeData();
+      });
+      let isloaded = $derived(animes.length > 0)
 </script>
 
 <section>
@@ -68,13 +72,20 @@
     <div class="separador"></div>
   </div>
   <div class="animeCard-container">
-    {#each animes as anime}
-      <AnimeCard {anime} />
-    {/each}
+    {#if isloaded}
+      {#each animes as anime}
+        <AnimeCard {anime} />
+      {/each}
+    {:else}
+      {#each loopArray as _}
+        <div transition:fade={{ duration: 250 }}>
+          <Loader />
+        </div>
+      {/each}
+    {/if}
   </div>
   <!-- <button class="show-more" onclick={loadMore}>&darr;Show more</button> -->
 </section>
-
 <style>
   section {
     padding: 1rem 1.5rem; /* Ajustado para móviles */
@@ -155,7 +166,11 @@
       padding: 0.5rem 0.3rem;
     }
     .animeCard-container{
-      display: grid;
+      gap: 10px;
+    }
+  }
+  @media (width < 400px){
+    .animeCard-container{
       grid-template-columns: repeat(2, 1fr);
     }
   }
