@@ -28,9 +28,10 @@
       <li onclick={()=>{showSearchInput(); showMenu = !showMenu}}>
         <i class="fa-solid fa-magnifying-glass verde"></i>Buscar
       </li>
-      <li><i class="fa-solid fa-star verde"></i>Favoritos</li>
+      <li translate="no" onclick={()=>{showMenu = !showMenu}}><a href="/about"><i class="fa-solid fa-circle-info verde"></i>Acerca de</a></li>
+      <!-- <li><i class="fa-solid fa-star verde"></i>Favoritos</li>
       <li><i class="fa-solid fa-list"></i>Mi lista</li>
-      <li><i class="fa-solid fa-music"></i>OPs Favoritos</li>
+      <li><i class="fa-solid fa-music"></i>OPs Favoritos</li> -->
     </ul>
   </nav>
   <div class="botton-content">
