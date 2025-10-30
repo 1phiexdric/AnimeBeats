@@ -95,7 +95,7 @@
     display: grid;
     /* Crea columnas de mínimo 150px, y las ajusta para llenar el espacio */
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px; /* Espacio entre tarjetas */
+    gap: 10px; /* Espacio entre tarjetas */
     justify-items: center; /* Centra las tarjetas en sus celdas */
   }
 
@@ -139,7 +139,7 @@
       font-size: 2.5rem; /* Restaura el tamaño en pantallas grandes */
     }
     .animeCard-container {
-      gap: 25px;
+      gap: 20px;
     }
   }
   @media (width <720px) {
@@ -153,6 +153,10 @@
     .filtros button {
       font-size: 0.9rem;
       padding: 0.5rem 0.3rem;
+    }
+    .animeCard-container{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>

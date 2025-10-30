@@ -1,2 +1,0 @@
-proxima tarea:
-- agregar traduccion con la api de libretranslate para la description
