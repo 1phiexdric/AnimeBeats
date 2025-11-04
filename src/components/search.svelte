@@ -40,7 +40,7 @@
             oninput={debouncing}
             bind:value={searchterm}
           />
-          <button aria-label="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button aria-label="search-button" class="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
       </div>
       <ul>
@@ -114,7 +114,7 @@
     color: var(--color-text-secondary);
   }
 
-  button {
+  button:not(.search-button) {
     background: none;
     border: none;
     cursor: pointer;
@@ -122,11 +122,11 @@
     font-size: 1.5rem;
   }
 
-  button:hover {
+  button:not(.search-button):hover {
     color: var(--color-text-primary);
   }
 
-  .input-container a {
+  .input-container button {
     position: absolute;
     top: 50%;
     right: 1rem;
