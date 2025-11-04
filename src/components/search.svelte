@@ -3,7 +3,7 @@
 
   let { showSearch } = $props();
   const dispatch = createEventDispatcher();
-  let searchterm = "";
+  let searchterm = $state("");
   let searchResults: Array<any> = $state([]);
   function closeSearch() {
     dispatch("close");
@@ -40,7 +40,7 @@
             oninput={debouncing}
             bind:value={searchterm}
           />
-          <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+          <button aria-label="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
       </div>
       <ul>
