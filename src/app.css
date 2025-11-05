@@ -39,3 +39,25 @@ body {
 	background-color: var(--color-border);
 	width: 300px;
 }
+
+  .title {
+    color: var(--color-text-primary);
+    font-size: 2.5rem; /* Tamaño reducido para móviles */
+    margin: 0;
+	font-weight: 700;
+	letter-spacing: 2px;
+  }
+  @media (min-width: 768px) {
+    .title {
+      font-size: 2.5rem; /* Restaura el tamaño en pantallas grandes */
+    }
+  }
+  @media (width <720px) {
+    .title {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .separador {
+      width: 100%;
+    }
+  }

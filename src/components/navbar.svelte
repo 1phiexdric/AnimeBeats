@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Search from "./search.svelte";
   let showSearch = $state(false);
   let showMenu = $state(false);
@@ -6,6 +6,7 @@
     // Lógica para mostrar el input de búsqueda
     showSearch = !showSearch;
   }
+  let userId: string = ""
 </script>
 
 <div class="main">
@@ -39,7 +40,7 @@
     <!--TODO
     * poner /user en el href
     -->
-    <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}} >
+    <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}}  href="/user/{userId}">
     <img src="/user.jpg" alt="logo de la pagina">
     <span>Tu perfil</span>
   </a>
