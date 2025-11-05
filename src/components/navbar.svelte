@@ -36,7 +36,10 @@
   </nav>
   <div class="botton-content">
     <div class="gtranslate_wrapper"></div>
-    <a href="/user" class="tu_perfil" onclick={()=>{showMenu = !showMenu}} >
+    <!--TODO
+    * poner /user en el href
+    -->
+    <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}} >
     <img src="/user.jpg" alt="logo de la pagina">
     <span>Tu perfil</span>
   </a>
