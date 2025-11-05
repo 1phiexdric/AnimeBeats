@@ -54,13 +54,13 @@
         />
       </div>
       <div class="main-info">
-        <h1 class="inter" translate="no">{animeDetails.title.romaji}</h1>
+        <h1 class="oswald" translate="no">{animeDetails.title.romaji}</h1>
         <div class="genres">
           {#each animeDetails.genres as genre}
             <span class="genre">{genre}</span>
           {/each}
         </div>
-        <h2 class="inter">Descripción</h2>
+        <h2>Descripción</h2>
         <div class="description">{@html animeDetails.description}</div>
         <div class="additional-info">
           <p><strong>Episodios:</strong> {animeDetails.episodes}</p>
@@ -172,7 +172,7 @@
   }
 
   h1 {
-    font-size: 2rem; /* Tamaño de fuente reducido */
+    font-size: 2.5rem; /* Tamaño de fuente reducido */
     font-weight: 800;
     margin-bottom: 0.5rem;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);

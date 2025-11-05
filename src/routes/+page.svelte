@@ -5,68 +5,73 @@
   import { fade } from "svelte/transition";
   // export let data
   let animes: Array<Object> = $state([]);
-    let selectedTipo : String|null = $state("todos")
-    const loopArray = Array(20).fill(null);
-    // async function loadMore() {
-      //   const nextPage = Math.floor(animes.length / 12) + 1;
-      //   const res = await fetch('/api/anime?page=' + nextPage)
-      //   const newAnimes = await res.json();
-      //   console.log(newAnimes);
-      //   animes = [...animes, ...newAnimes];
-      // }
-      async function loadAnimeData(tipo?: string) {
-        animes = [];
-        const url = tipo ? `/api/filtro?tipo=${tipo}` : "/api/filtro";
-        const responseCurados = await fetch(url);
-        const listaCurada = await responseCurados.json();
-        console.log(`Cargados ${listaCurada.length} ítems.`);
-        animes = [...listaCurada];
-      }
-      function handleFilter(tipo: string) {
-        loadAnimeData(tipo);
-      }
-      onMount(() => {
-        loadAnimeData();
-      });
-      let isloaded = $derived(animes.length > 0)
+  let selectedTipo: string = $state("todos");
+  const loopArray = Array(12).fill(null);
+
+  let page: number = 1;
+  let hasMore: boolean = $state(true)
+
+  async function loadAnimeData(tipo?: string) {
+    const url = tipo && tipo != 'todos' ? `/api/filtro?tipo=${tipo}&page=${page}` : `/api/filtro?page=${page}`;
+    const responseCurados = await fetch(url);
+    const listaCurada = await responseCurados.json();
+    console.log(`Cargados ${listaCurada.length} ítems.`);
+    if(listaCurada.length > 0){
+      animes = [...animes, ...listaCurada]
+      page++
+    }
+    if(listaCurada.length < 12){
+      hasMore = false
+      
+    }
+  }
+  function handleFilter(tipo: string) {
+    hasMore =true
+    animes = []
+    page = 1
+    loadAnimeData(tipo);
+  }
+  onMount(() => {
+    loadAnimeData();
+  });
+  let isloaded = $derived(animes.length > 0);
 </script>
 
 <section>
   <div class="title-container">
-    <h1 class="title inter" translate="no">AnimeBeats</h1>
+    <h1 class="title oswald" translate="no">AnimeBeats</h1>
     <div class="filtros">
-      <button onclick={() => {
-        selectedTipo = 'todos'
-        
-        loadAnimeData()}}
-        class:selected={selectedTipo === "todos"}
-        aria-pressed={selectedTipo === "todos"}>Todos</button>
       <button
         onclick={() => {
-          selectedTipo = 'anime'
+          selectedTipo = "todos";
+handleFilter('todos')
+        }}
+        class:selected={selectedTipo === "todos"}
+        aria-pressed={selectedTipo === "todos"}>Todos</button
+      >
+      <button
+        onclick={() => {
+          selectedTipo = "anime_japones";
           handleFilter("anime_japones");
         }}
-        class:selected={selectedTipo==='anime'}
-        aria-pressed={selectedTipo === "anime"}
-        >anime</button
+        class:selected={selectedTipo === "anime_japones"}
+        aria-pressed={selectedTipo === "anime_japones"}>anime</button
       >
       <button
         onclick={() => {
-          selectedTipo = 'donghua'
+          selectedTipo = "donghua";
           handleFilter("donghua");
         }}
-        class:selected={selectedTipo==='donghua'}
-        aria-pressed={selectedTipo === 'donghua'}
-        >Donghua</button
+        class:selected={selectedTipo === "donghua"}
+        aria-pressed={selectedTipo === "donghua"}>Donghua</button
       >
       <button
         onclick={() => {
-          selectedTipo = 'aeni'
+          selectedTipo = "aeni";
           handleFilter("aeni");
         }}
-        class:selected={selectedTipo==='aeni'}
-        aria-pressed={selectedTipo === 'aeni'}
-        >Aeni</button
+        class:selected={selectedTipo === "aeni"}
+        aria-pressed={selectedTipo === "aeni"}>Aeni</button
       >
     </div>
     <div class="separador"></div>
@@ -84,8 +89,11 @@
       {/each}
     {/if}
   </div>
-  <!-- <button class="show-more" onclick={loadMore}>&darr;Show more</button> -->
+ {#if hasMore}
+    <button class="show-more oswald" onclick={()=>{loadAnimeData(selectedTipo)}}>Mostrar más &darr;</button>
+ {/if}
 </section>
+
 <style>
   section {
     padding: 1rem 1.5rem; /* Ajustado para móviles */
@@ -97,7 +105,7 @@
   }
   .title {
     color: var(--color-text-primary);
-    font-size: 2rem; /* Tamaño reducido para móviles */
+    font-size: 2.5rem; /* Tamaño reducido para móviles */
     margin: 0;
   }
 
@@ -141,6 +149,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
+  .show-more{
+    display: block;
+    margin: 20px auto;
+    font-size: 1.3rem;
+    border-bottom: 3px solid var(--color-border);
+    padding: 5px;
+  }
+
   /* Media Query para pantallas más grandes */
   @media (min-width: 768px) {
     section {
@@ -165,12 +181,12 @@
       font-size: 0.9rem;
       padding: 0.5rem 0.3rem;
     }
-    .animeCard-container{
+    .animeCard-container {
       gap: 10px;
     }
   }
-  @media (width < 400px){
-    .animeCard-container{
+  @media (width < 400px) {
+    .animeCard-container {
       grid-template-columns: repeat(2, 1fr);
     }
   }

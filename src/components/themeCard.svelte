@@ -25,7 +25,7 @@
       <i class="fa-solid fa-play"></i>
     </button>
     <div class="text-content">
-      <h3 translate="no">{titulo} - OP:{numero}</h3>
+      <h3 translate="no" class="oswald">{titulo} - OP:{numero}</h3>
       <p class="metadata artist" translate="no">{artista}</p>
       <p class="metadata">Episodios: {episodios}</p>
       {#if version}

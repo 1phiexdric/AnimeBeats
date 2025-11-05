@@ -27,9 +27,13 @@ body {
 	height: 100%;
 }
 
-.inter {
-	font-family: 'Inter', sans-serif;
+
+.oswald {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
+
 .separador {
 	height: 2px;
 	background-color: var(--color-border);

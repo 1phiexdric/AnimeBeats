@@ -20,7 +20,7 @@
 </div>
 </div>
 <aside class:open={showMenu}>
-	<h2 class="inter" translate="no">AnimeBeats</h2>
+	<h2 class="oswald" translate="no">AnimeBeats</h2>
   <hr />
   <nav>
     <ul>
@@ -36,10 +36,10 @@
   </nav>
   <div class="botton-content">
     <div class="gtranslate_wrapper"></div>
-    <div class="tu_perfil">
+    <a href="/user" class="tu_perfil" onclick={()=>{showMenu = !showMenu}} >
     <img src="/user.jpg" alt="logo de la pagina">
     <span>Tu perfil</span>
-  </div>
+  </a>
   </div>
 </aside>
 <!-- Aquí iría el input de búsqueda -->
@@ -78,6 +78,7 @@
     font-size: 1.8rem;
     text-align: center;
     padding-bottom: 1.5rem;
+    font-weight: 500;
   }
   hr {
     border: none;

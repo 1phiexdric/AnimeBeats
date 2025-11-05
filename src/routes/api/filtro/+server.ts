@@ -9,14 +9,20 @@ export async function GET({url, setHeaders}): Promise<any> {
         'cache-control': 'public, max-age=600'
     });
     const tipo = url.searchParams.get('tipo')
+    const page = parseInt(url.searchParams.get('page') || '1')
     const collection = await getTemasCollection()
     let queryType = {}
     if(tipo){
         queryType = {tipo_animacion: tipo}
     }
+    // limit para limitar el numero de documentos
+    // skip hace un salto de documentos
+
+    const pageSize: number = 12 
+    const skip: number = (page - 1) * pageSize;
     const temasCurados = await collection.find({
         ...queryType
-    }).toArray()
+    }).skip(skip).limit(pageSize).toArray()
     const ids = temasCurados.map((item: any) => item.anilist_id)
     
     const query = buildBatchQuery(ids)
