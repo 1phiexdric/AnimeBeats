@@ -17,5 +17,5 @@ export async function connectToDateBase(){
 
 export async function getTemasCollection() {
     const db = await connectToDateBase();
-    return db.collection('temas_anime'); // Asegúrate de que este nombre coincida con tu colección
+    return db.collection('temas_anime');
 }
