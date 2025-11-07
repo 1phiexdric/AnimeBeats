@@ -1,3 +1,31 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { afterNavigate } from '$app/navigation';
+  
+  
+    
+  function scrollToTop(behavior: ScrollBehavior = 'auto') {
+    
+    const main = document.querySelector('main');
+    if (main && 'scrollTo' in main) {
+      (main as HTMLElement).scrollTo({ top: 0, behavior });
+      return;
+    }
+  
+    window.scrollTo({ top: 0, behavior });
+  }
+
+  onMount(() => {
+   
+    scrollToTop('auto');
+  });
+
+  afterNavigate(() => {
+   
+    setTimeout(() => scrollToTop('smooth'), 0);
+  });
+</script>
+
 <div class="main">
     <div class="container mx-auto max-w-4xl px-4 py-8 text-slate-300">
     <header class="text-center mb-12">
