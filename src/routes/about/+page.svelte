@@ -89,4 +89,9 @@
         padding: 20px;
         margin-bottom: 10px;
     }
+@media(width <800px){
+h1{
+margin-top: 70px;
+}
+}
 </style>
