@@ -1,7 +1,7 @@
 <div class="main">
     <div class="container mx-auto max-w-4xl px-4 py-8 text-slate-300">
     <header class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-white">Acerca de AnimeBeats</h1>
+        <h1 class="text-5xl font-extrabold text-white oswald">Acerca de AnimeBeats</h1>
         <p class="text-lg mt-4">
             Tu lugar para explorar y escuchar los openings y endings de tus animes favoritos.
         </p>
@@ -30,6 +30,7 @@
                         <a href="https://x.com/Friedrichruz" target="_blank" class="text-blue-400 hover:text-blue-300">x</a>
 
                     </li>
+<li><a href="https://Friedrich Ruiz.netlify.com" target="_blank" class="text-blue-400 hover:text-blue-300" >Portafolio</a></li>
                     </ul>
                 </div>
             </div>
