@@ -1,7 +1,35 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { afterNavigate } from '$app/navigation';
+  
+  
+    
+  function scrollToTop(behavior: ScrollBehavior = 'auto') {
+    
+    const main = document.querySelector('main');
+    if (main && 'scrollTo' in main) {
+      (main as HTMLElement).scrollTo({ top: 0, behavior });
+      return;
+    }
+  
+    window.scrollTo({ top: 0, behavior });
+  }
+
+  onMount(() => {
+   
+    scrollToTop('auto');
+  });
+
+  afterNavigate(() => {
+   
+    setTimeout(() => scrollToTop('smooth'), 0);
+  });
+</script>
+
 <div class="main">
     <div class="container mx-auto max-w-4xl px-4 py-8 text-slate-300">
     <header class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-white">Acerca de AnimeBeats</h1>
+        <h1 class="text-5xl font-extrabold text-white oswald">Acerca de AnimeBeats</h1>
         <p class="text-lg mt-4">
             Tu lugar para explorar y escuchar los openings y endings de tus animes favoritos.
         </p>
@@ -30,6 +58,7 @@
                         <a href="https://x.com/Friedrichruz" target="_blank" class="text-blue-400 hover:text-blue-300">x</a>
 
                     </li>
+<li><a href="https://Friedrich Ruiz.netlify.com" target="_blank" class="text-blue-400 hover:text-blue-300" >Portafolio</a></li>
                     </ul>
                 </div>
             </div>
@@ -88,4 +117,9 @@
         padding: 20px;
         margin-bottom: 10px;
     }
+@media(width <800px){
+h1{
+margin-top: 70px;
+}
+}
 </style>
