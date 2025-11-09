@@ -33,17 +33,17 @@ import { verificarToken } from "$lib/server/auth_utils";
 import { getUserCollection } from "$lib/server/mongo";
 
 
-// Inicializa la colección de MongoDB
+
 const collectionPromise = getUserCollection();
 
 export const handle: Handle = async ({ event, resolve }) => {
-    // ⚠️ Importante: Esperamos la conexión de la colección fuera del bloque handle
+    
     const collection = await collectionPromise;
     const token = event.cookies.get("sessionid");
 console.log('HOOK: Token encontrado:', token)
     if (token) {
         try {
-            // verficadorToken debe devolver el tipo JwtPayload
+            
             const payload = verificarToken(token) as JwtPayload; 
             
             if (payload && typeof payload === "object") {
@@ -65,7 +65,7 @@ console.log('HOOK: Usuario de BD:', user)
         } catch (err) {
             console.error('HOOK: Error en try/catch:', (err as Error).message); // <-- AÑADE ESTO
             console.log('Token inválido:', (err as Error).message);
-            // 3. Limpiar el token inválido
+           
             event.cookies.delete('sessionid', { path: '/' }); 
         }
     }

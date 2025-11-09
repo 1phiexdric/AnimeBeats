@@ -1,7 +1,7 @@
 import type { Actions } from "../../$types";
 import { getUserCollection } from "$lib/server/mongo";
-import { success, z } from "zod";
-import { error, fail, redirect } from "@sveltejs/kit";
+import { z } from "zod";
+import { fail, redirect } from "@sveltejs/kit";
 import * as bcrypt from "bcrypt";
 import { generateToken } from "$lib/server/auth_utils";
 
