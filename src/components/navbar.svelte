@@ -1,16 +1,17 @@
 <script lang="ts">
   import Search from "./search.svelte";
+  import { userStore } from "$lib/store/userStore";
   let showSearch = $state(false);
   let showMenu = $state(false);
   function showSearchInput() {
     // Lógica para mostrar el input de búsqueda
     showSearch = !showSearch;
   }
-  let userId: string = ""
+  
+  let isUserAuthenticated: boolean = false
 </script>
 
 <div class="main">
-	
 	<div class="btn-div">
 		<button
 		onclick={() => (showMenu = !showMenu)}
@@ -40,10 +41,17 @@
     <!--TODO
     * poner /user en el href
     -->
-    <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}}  href="/user/{userId}">
+    {#if !$userStore}
+      <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}} href='/user/login'>
     <img src="/user.jpg" alt="logo de la pagina">
-    <span>Tu perfil</span>
+    <span>Log in</span>
   </a>
+  {:else}
+  <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}} href='/user/{$userStore._id}'>
+<img src="/user.jpg" alt="logo de la pagina">
+<span>{$userStore.username}</span>
+</a>
+    {/if}
   </div>
 </aside>
 <!-- Aquí iría el input de búsqueda -->

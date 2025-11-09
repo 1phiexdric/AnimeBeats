@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { userStore } from "$lib/store/userStore";
 	let activeTab: 'animes' | 'songs' = 'animes';
 </script>
 
@@ -7,7 +8,7 @@
 		<div class="user-img-container">
 			<img src="/user.jpg" alt="Foto de perfil del usuario" />
 			<div class="user-info">
-				<h2 id="user-name" class="oswald">Nombre de perfil</h2>
+				<h2 id="user-name" class="oswald">{$userStore?.username}</h2>
 				<p class="user-date">Miembro desde Sep 24, 2025</p>
 			</div>
 		</div>
