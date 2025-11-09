@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { userStore } from "$lib/store/userStore";
 	let activeTab: 'animes' | 'songs' = 'animes';
+	
 </script>
 
 <section class="main">
 	<div class="banner">
+		<form action="?/logout" method="post">
+		<button class="log-out"><i class="fa-solid fa-right-from-bracket"></i>
+		log out</button></form>
 		<div class="user-img-container">
 			<img src="/user.jpg" alt="Foto de perfil del usuario" />
 			<div class="user-info">
@@ -21,14 +25,14 @@
 			<button
 				class="btn-tab"
 				class:active={activeTab === 'animes'}
-				on:click={() => (activeTab = 'animes')}
+				onclick={() => (activeTab = 'animes')}
 			>
 				Animes Favoritos
 			</button>
 			<button
 				class="btn-tab"
 				class:active={activeTab === 'songs'}
-				on:click={() => (activeTab = 'songs')}
+				onclick={() => (activeTab = 'songs')}
 			>
 				Canciones Favoritas
 			</button>
@@ -41,6 +45,7 @@
 			{/if}
 		</section>
 	</div>
+	
 </section>
 
 <style>
@@ -163,7 +168,21 @@
 		color: var(--color-accent);
 		border-bottom-color: var(--color-accent);
 	}
-
+	.log-out{
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		color: blacks;
+		background-color: white;
+		transition: all 300ms ease-in-out;
+		padding: 5px 10px;
+		border-radius: 8px;
+		border: 3px solid #ff4d4d;
+	}
+	.log-out:hover{
+		color: #ff4d4d;
+		background-color: black;
+	}
 	@media (width < 800px) {
 		.banner {
 			flex-direction: column;
@@ -195,7 +214,10 @@
         .edit-profile-container{
             margin: 10px;
         }
-		
+		.log-out{
+		right: 10px;
+		top: 50px;
+	}
 	}
 	@media (width < 600px) {
 		.banner {

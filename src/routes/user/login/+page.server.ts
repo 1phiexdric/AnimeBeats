@@ -75,7 +75,7 @@ export const actions = {
     redirect(303, "/");
     return { success: true, action: "login" };
   },
-  register: async ({ request }) => {
+  register: async ({ request, cookies }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     const result = registerSchema.safeParse(data);
@@ -100,10 +100,17 @@ export const actions = {
         password: claveEncriptada,
         email: data.email,
       });
+      const email = data.email.toString()
+      const token = generateToken(email)
+    
+    cookies.set('sessionid', token, { path: '/', maxAge: 86400});
+      console.log("action login");
+
     } catch (error) {
       
       return fail(500, { message: "No se pudo crear el usuario" });
     }
+    redirect(303, '/')
     return {
       success: true,
       message: "Registrado con exito",
