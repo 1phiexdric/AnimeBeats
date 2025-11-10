@@ -11,6 +11,7 @@ type MongoUser = {
     _id: import('mongodb').ObjectId; 
     email: string;
     username: string;
+    create_at: Date;
     password?: string; 
 }
 
@@ -21,6 +22,7 @@ declare global {
                 _id: string;
                 email: string;
                 username: string;
+                create_at: Date;
             };
         }
     }
@@ -58,6 +60,7 @@ console.log('HOOK: Usuario de BD:', user)
                         _id: user._id.toString(), 
                         email: user.email,
                         username: user.username,
+                        create_at: user.create_at
                     };
                     console.log('HOOK: ¡locals.user asignado!', event.locals.user); // <-- AÑADE ESTO
                 }

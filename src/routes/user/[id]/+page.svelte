@@ -1,6 +1,15 @@
 <script lang="ts">
 	import { userStore } from "$lib/store/userStore";
-	let activeTab: 'animes' | 'songs' = 'animes';
+	let activeTab: 'animes' | 'songs' = $state('animes');
+	let fecha: Date | undefined = $state()
+	if($userStore?.create_at){
+		fecha = new Date($userStore?.create_at)
+		fecha = fecha.toLocaleDateString('es', {
+			day: '2-digit',
+			month: 'short',
+			year: 'numeric'
+		})
+	}
 	
 </script>
 
@@ -13,7 +22,7 @@
 			<img src="/user.jpg" alt="Foto de perfil del usuario" />
 			<div class="user-info">
 				<h2 id="user-name" class="oswald">{$userStore?.username}</h2>
-				<p class="user-date">Miembro desde Sep 24, 2025</p>
+				<p class="user-date">Miembro desde {fecha}</p>
 			</div>
 		</div>
 		<div class="edit-profile-container">

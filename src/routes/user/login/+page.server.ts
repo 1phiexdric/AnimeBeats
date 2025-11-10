@@ -99,6 +99,7 @@ export const actions = {
         username: data.username,
         password: claveEncriptada,
         email: data.email,
+        create_at: new Date()
       });
       const email = data.email.toString()
       const token = generateToken(email)
