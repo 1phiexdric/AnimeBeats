@@ -199,5 +199,8 @@
     .submit {
       width: 50%;
     }
+    .main-form{
+      width: 100%;
+    }
   }
 </style>
