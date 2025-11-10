@@ -4,7 +4,7 @@ import { z } from "zod";
 import { fail, redirect } from "@sveltejs/kit";
 import * as bcrypt from "bcrypt";
 import { generateToken } from "$lib/server/auth_utils";
-
+import { env } from "$env/dynamic/private";
 // --- esquemas de Zod ---
 const registerSchema = z.object({
   email: z.string().email({ message: "Por favor, introduce un email valido" }),
@@ -17,6 +17,8 @@ const registerSchema = z.object({
       message: "El nombre de usuario debe tener al menos 3 caracteres",
     }),
 });
+
+const isProduction = env.NODE_ENV === 'production'
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Por favor, introduce un email valido" }),
@@ -62,7 +64,12 @@ export const actions = {
       const token = generateToken(user.email)
       console.log(token);
     
-    cookies.set('sessionid', token, { path: '/', maxAge: 86400});
+    cookies.set('sessionid', token, { 
+      path: '/',
+      secure: isProduction,
+    sameSite: isProduction ? 'lax' : false,
+    maxAge: 60 * 60 * 24 * 7,
+  });
       console.log("action login");
       console.log(user);
       // redirect
@@ -104,8 +111,12 @@ export const actions = {
       const email = data.email.toString()
       const token = generateToken(email)
     
-    cookies.set('sessionid', token, { path: '/', maxAge: 86400});
-      console.log("action login");
+    cookies.set('sessionid', token, { 
+      path: '/',
+      secure: isProduction,// en movil es necesario ya que require mas seguridad, solo acepta https
+    sameSite: isProduction ? 'lax' : false,
+    maxAge: 60 * 60 * 24 * 7,
+  });
 
     } catch (error) {
       
