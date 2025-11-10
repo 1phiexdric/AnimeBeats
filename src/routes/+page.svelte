@@ -103,11 +103,7 @@ handleFilter('todos')
     letter-spacing: 2px;
     margin-bottom: 2rem;
   }
-  .title {
-    color: var(--color-text-primary);
-    font-size: 2.5rem; /* Tamaño reducido para móviles */
-    margin: 0;
-  }
+
 
   /* Usando Grid para un layout más robusto */
   .animeCard-container {

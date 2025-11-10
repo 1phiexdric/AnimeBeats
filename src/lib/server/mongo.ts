@@ -19,3 +19,11 @@ export async function getTemasCollection() {
     const db = await connectToDateBase();
     return db.collection('temas_anime');
 }
+export async function getUserCollection(){
+    const db = await connectToDateBase();
+    return db.collection('users')
+}
+export async function getFavoritesCollection() {
+    const db = await connectToDateBase()
+    return db.collection('favorites')
+}
