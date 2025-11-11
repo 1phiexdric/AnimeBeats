@@ -61,14 +61,20 @@ export const actions = {
           action: "login",
         });
       }
-      const token = generateToken(user.email)
-      console.log(token);
+      const accessToken = generateToken(user.email, '15m')
+      const refreshToken = generateToken(user.email, '30d')
     
-    cookies.set('sessionid', token, { 
+    cookies.set('accessToken', accessToken, { 
       path: '/',
       secure: isProduction,
     sameSite: isProduction ? 'lax' : false,
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 15*60,
+  });
+    cookies.set('refreshToken', refreshToken, { 
+      path: '/',
+      secure: isProduction,
+    sameSite: isProduction ? 'lax' : false,
+    maxAge: 30 * 24 * 60 * 60,
   });
       console.log("action login");
       console.log(user);
@@ -113,7 +119,8 @@ export const actions = {
     
     cookies.set('sessionid', token, { 
       path: '/',
-      secure: isProduction,// en movil es necesario ya que require mas seguridad, solo acepta https
+      secure: isProduction,
+      // en movil es necesario ya que require mas seguridad, solo acepta https
     sameSite: isProduction ? 'lax' : false,
     maxAge: 60 * 60 * 24 * 7,
   });

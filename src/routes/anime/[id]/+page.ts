@@ -67,6 +67,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
     // --- Devolver ambos conjuntos de datos combinados ---
     return {
+      id,
       animeDetails,
       animeThemes
     };

@@ -1,22 +1,21 @@
 <script lang="ts">
+  // store
+  import { userStore } from '$lib/store/userStore';
+
+  //svelte
   import { onMount } from 'svelte';
   import { afterNavigate } from '$app/navigation';
+
+  // components
   import ThemeCard from '../../../components/themeCard.svelte';
   import YoutubePlayer from '../../../components/youtubePlayer.svelte';
+
+  // utils
+  import { scrollToTop } from '$lib/layout_utils';
   export let data;
-  $: ({ animeDetails, animeThemes } = data);
+  $: ({ animeDetails, animeThemes, id } = data);
   
-    // scroll al top del contenedor que hace scroll (layout main)
-  function scrollToTop(behavior: ScrollBehavior = 'auto') {
-    // intenta primero el main del layout
-    const main = document.querySelector('main');
-    if (main && 'scrollTo' in main) {
-      (main as HTMLElement).scrollTo({ top: 0, behavior });
-      return;
-    }
-    // fallback al window (si tu layout no usa main con overflow)
-    window.scrollTo({ top: 0, behavior });
-  }
+  
 
   onMount(() => {
     // en la primera carga forzamos arriba
@@ -28,6 +27,20 @@
     // se usa setTimeout 0 para garantizar que el DOM esté renderizado
     setTimeout(() => scrollToTop('smooth'), 0);
   });
+
+  function goBack(){
+    history.back()
+  }
+  let isliked: boolean = false
+  async function likeAnime(){
+    isliked = !isliked
+    const addtoBd = await fetch(`/api/fav/${$userStore?._id}/animes/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+    })
+  }
 </script>
 
 {#if animeDetails}
@@ -35,9 +48,16 @@
     class="anime-details-container"
     style="--anime-color: {animeDetails.coverImage.color}"
   >
-    <a href="/" class="btn-backward" aria-label="return to home btn">
+    <div class="btns-up-container">
+<button onclick={goBack} class="btn-backward btn-de-arriba" aria-label="return to home btn">
     <i class="fa-solid fa-backward"></i>
-  </a>
+  </button>
+  {#if $userStore}
+    <button class="btn-de-arriba btn-like {isliked? 'active': ''}" onclick={likeAnime}>
+    <i class="fa-solid fa-heart"></i>
+  </button>
+  {/if}
+    </div>
     <div class="banner-container">
       <img
         src={animeDetails.bannerImage}
@@ -122,10 +142,17 @@
     color: #fff;
     padding-bottom: 2rem;
   }
-  .btn-backward{
+
+  .btns-up-container{
     position: absolute;
-    margin-top: 60px;
-    margin-left: 20px;
+    margin: 20px auto;
+    display: flex;
+    max-width: 100%;
+    min-width: 80%;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  .btn-de-arriba{
     color: white;
     font-size: 1.5rem;
     background-color: #333;
@@ -136,8 +163,10 @@
     justify-content: center;
     align-items: center;
     z-index: 10;
+  } 
+  .btn-like.active{
+    color: var(--color-accent);
   }
-
   .banner-image {
     width: 100%;
     height: 200px; /* Altura reducida para móviles */
@@ -284,6 +313,14 @@
     }
     .themes-grid {
       grid-template-columns: 1fr 1fr; /* Dos columnas para los temas */
+    }
+    
+  }
+  @media(width < 800px){
+    .btns-up-container{
+      margin-top: 60px;
+      width: 100%;
+      padding: 10px;
     }
   }
 </style>

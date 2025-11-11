@@ -53,6 +53,12 @@
 {#if form?.errors?.password}
         <p class="error-message">{form.errors.password[0]}</p>
       {/if}
+      <!-- <div class="remember-container">
+        <input type="checkbox" name="remember" id="remember-me">
+              <label for="remember-me" id="remenber-label">
+      Recordarme
+              </label>
+      </div> -->
     <button class="submit" type="submit" formaction={isLogin? '?/login':'?/register'}>{isLogin ? "log in" : "Sign up"}</button>
     </form>
     {#if form?.message}
@@ -129,12 +135,7 @@
     color: green;
   }
 
-  /* --- CAMBIOS PRINCIPALES AQUÍ --- */
-
-  /* 1. Regla general para inputs:
-     Le decimos que NO aplique al input de contraseña (#password)
-     porque lo manejaremos de forma especial.
-     También añadí box-sizing y un padding horizontal (5px 10px) */
+  
   input:not(input[type="checkbox"]):not(#password) {
     background-color: white;
     width: 95%;
@@ -146,20 +147,14 @@
     box-sizing: border-box; /* Añadido para que el padding no afecte el ancho */
   }
 
-  /* 2. Contenedor de la contraseña:
-     Este DIV ahora toma el lugar del input en el layout.
-     Le damos el mismo ancho, margen y posición relativa. */
-  .input-password-container {
+    .input-password-container {
     width: 95%;
     margin: auto;
     margin-bottom: 10px; /* Para que coincida con los otros inputs */
     position: relative; /* Para posicionar el botón dentro de él */
   }
 
-  /* 3. Input de contraseña DENTRO del contenedor:
-     Hacemos que llene el 100% de su contenedor y le damos
-     el padding derecho para hacer espacio al botón. */
-  .input-password-container input {
+    .input-password-container input {
     background-color: white;
     width: 100%; /* Llena el contenedor */
     margin: 0; /* Sin margen */
@@ -169,9 +164,7 @@
     box-sizing: border-box; /* Importante */
   }
 
-  /* 4. Botón del ojo DENTRO del contenedor:
-     Lo posicionamos de forma absoluta, centrado verticalmente
-     y a la derecha. */
+ 
   .input-password-container button {
     position: absolute;
     right: 8px;
@@ -185,13 +178,14 @@
     color: #333; /* Color de ojo más sutil */
   }
 
-  /* 5. Regla de Focus:
-     La unificamos para que aplique a ambos tipos de input */
+
   input:not(input[type="checkbox"]):focus,
   .input-password-container input:focus {
     outline: 3px solid var(--color-accent);
   }
-
+  /* .remember-container{
+    margin: auto;
+  } */
   @media (width < 800px) {
     .main {
       width: 100%;

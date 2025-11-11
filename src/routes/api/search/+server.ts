@@ -56,7 +56,7 @@ export async function GET({ url }) {
 
         const results = await fetchAniListSearch(searchTerm);
 
-        // IMPORTANTE: Revisa si la respuesta de GraphQL tiene un array de 'errors'
+        
         if (results.errors) {
             console.error('GraphQL Errors:', results.errors);
             // Si hay errores de GraphQL, no podemos confiar en los datos.

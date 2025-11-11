@@ -2,77 +2,101 @@
 
 // 1. Tipado del Payload del JWT que verificas
 interface JwtPayload {
-    email: string;
-    
+  email: string;
 }
-
 
 type MongoUser = {
-    _id: import('mongodb').ObjectId; 
-    email: string;
-    username: string;
-    create_at: Date;
-    password?: string; 
-}
+  _id: import("mongodb").ObjectId;
+  email: string;
+  username: string;
+  create_at: Date;
+  password?: string;
+};
 
 declare global {
-    namespace App {
-        interface Locals {
-            user?: {
-                _id: string;
-                email: string;
-                username: string;
-                create_at: Date;
-            };
-        }
+  namespace App {
+    interface Locals {
+      user?: {
+        _id: string;
+        email: string;
+        username: string;
+        create_at: Date;
+      };
     }
+  }
 }
 
 // --- IMPORTACIONES ---
 import { type Handle } from "@sveltejs/kit";
 // Asegúrate de que verificarToken tenga una firma que devuelva Promise<JwtPayload | string | null> o similar
-import { verificarToken } from "$lib/server/auth_utils"; 
+import { verificarToken, generateToken } from "$lib/server/auth_utils";
 import { getUserCollection } from "$lib/server/mongo";
+import { env } from "$env/dynamic/private";
 
-
-
+const isProduction = env.NODE_ENV === "production";
 const collectionPromise = getUserCollection();
 
 export const handle: Handle = async ({ event, resolve }) => {
-    
-    const collection = await collectionPromise;
-    const token = event.cookies.get("sessionid");
-console.log('HOOK: Token encontrado:', token)
-    if (token) {
-        try {
-            
-            const payload = verificarToken(token) as JwtPayload; 
-            
-            if (payload && typeof payload === "object") {
-                
-                const user: MongoUser = await collection.findOne(
-                    { email: payload.email },
-                    { projection: { password: 0 } }
-                );
-console.log('HOOK: Usuario de BD:', user)
-                if (user) {
-                    event.locals.user = {
-                        _id: user._id.toString(), 
-                        email: user.email,
-                        username: user.username,
-                        create_at: user.create_at
-                    };
-                    console.log('HOOK: ¡locals.user asignado!', event.locals.user); // <-- AÑADE ESTO
-                }
-            }
-        } catch (err) {
-            console.error('HOOK: Error en try/catch:', (err as Error).message); // <-- AÑADE ESTO
-            console.log('Token inválido:', (err as Error).message);
-           
-            event.cookies.delete('sessionid', { path: '/' }); 
-        }
+  const collection = await collectionPromise;
+  const accessToken = event.cookies.get("accessToken");
+  const refreshToken = event.cookies.get("refreshToken");
+  if (accessToken) {
+    try {
+      const payload = verificarToken(accessToken) as JwtPayload;
+      const user: MongoUser = await collection.findOne(
+        { email: payload.email },
+        { projection: { password: 0 } }
+      );
+
+      if (user) {
+          event.locals.user = {
+            _id: user._id.toString(),
+            email: user.email,
+            username: user.username,
+            create_at: user.create_at,
+          };
+          return await resolve(event);
+        
+      }
+    } catch (err) {
+      console.log("Access Token expirado o inválido, intentando refresh...");
     }
-    
-    
-    return await resolve(event);
+    if (refreshToken) {
+      try {
+        const payloadRefresh = verificarToken(refreshToken);
+        if (payloadRefresh && typeof payloadRefresh === "object") {
+          const user = await collection.findOne(
+            { email: payloadRefresh.email },
+            { projection: { password: 0 } }
+          );
+          if (user) {
+            const newAccessToken = generateToken(user.email, "15m");
+
+            event.cookies.set("accessToken", newAccessToken, {
+              path: "/",
+              secure: isProduction,
+              httpOnly: true,
+              sameSite: isProduction ? "lax" : false,
+              maxAge: 15 * 60,
+            });
+
+            event.locals.user = {
+            _id: user._id.toString(),
+            email: user.email,
+            username: user.username,
+            create_at: user.create_at,
+          };
+            return await resolve(event);
+          }
+        }
+      } catch (err) {
+        event.cookies.delete("accessToken", { path: "/" });
+        event.cookies.delete("refreshToken", { path: "/" });
+        console.log("Refresh Token inválido, deslogueando.");
+      }
+    }
+  }
+
+ event.locals.user = undefined;
+  return await resolve(event);
 };

@@ -57,7 +57,7 @@
         }
     }
 
-    // ¡CRUCIAL! Limpiamos el reproductor al destruir el componente
+    
     onDestroy(() => {
         (player as any)?.destroy();
     });

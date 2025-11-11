@@ -1,16 +1,46 @@
 <script lang="ts">
+	// types
+	import type { PageData } from "../$types";
+	// Svelte
+	import { onDestroy } from "svelte";
+	import { slide } from 'svelte/transition';
+
+	// Stores
 	import { userStore } from "$lib/store/userStore";
+	import { playerStore } from "$lib/store/playerStore";
+	
+	// components
+	import YoutubePlayer from "../../../components/youtubePlayer.svelte";
+	import ThemeCard from "../../../components/themeCard.svelte";
+
 	let activeTab: 'animes' | 'songs' = $state('animes');
-	let fecha: Date | undefined = $state()
-	if($userStore?.create_at){
-		fecha = new Date($userStore?.create_at)
+	let fecha: Date | string = $state("")
+	let {data } = $props() as {data: PageData}
+	let { canciones, user} = data
+	if(user?.create_at){
+		fecha = new Date(user.create_at)
 		fecha = fecha.toLocaleDateString('es', {
 			day: '2-digit',
 			month: 'short',
 			year: 'numeric'
 		})
 	}
-	
+	let animes= $state(data.animes)
+	onDestroy(()=>{
+		playerStore.reset()
+	})
+	async function deleteAnime(userId: string| undefined,animeId: string | number){
+		
+		const response = await fetch(`/api/fav/${userId}/animes/${animeId}`, {
+			method: "DELETE",
+		})
+		
+		if(!response.ok){
+			console.error("Error al eliminar el anime de favoritos");
+			return
+		}
+		animes = animes.filter((anime) => anime.id != animeId);
+	}
 </script>
 
 <section class="main">
@@ -21,7 +51,7 @@
 		<div class="user-img-container">
 			<img src="/user.jpg" alt="Foto de perfil del usuario" />
 			<div class="user-info">
-				<h2 id="user-name" class="oswald">{$userStore?.username}</h2>
+				<h2 id="user-name" class="oswald">{user?.username}</h2>
 				<p class="user-date">Miembro desde {fecha}</p>
 			</div>
 		</div>
@@ -34,7 +64,9 @@
 			<button
 				class="btn-tab"
 				class:active={activeTab === 'animes'}
-				onclick={() => (activeTab = 'animes')}
+				onclick={() => {
+					(activeTab = 'animes')
+			playerStore.reset()}}
 			>
 				Animes Favoritos
 			</button>
@@ -48,10 +80,38 @@
 		</div>
 		<section class="favs">
 			{#if activeTab === 'animes'}
-				<p>Aquí se mostrarán los animes favoritos.</p>
+			{#if animes.length > 0}
+			<ul class="favorites-animes-list">
+				{#each animes as anime}
+				<li class="favorites-animes-list-elements" out:slide={{duration:200}}>
+					<img src={anime.coverImage.extraLarge} alt="" class="favorites-animes-list-imgs">
+					<div class="favorites-animes-list-content">
+						<h3 class="oswald" translate="no">{anime.title.romaji}</h3>
+						<div class="favorites-animes-list-content-down">
+							<a href={`/anime/${anime.id}`} style="display: contents;">
+								Ver Detalles
+							</a>
+							<button class="favorites-delete-btn" aria-label="borrar" onclick={()=>deleteAnime($userStore?._id, anime.id)}><p>Borrar de favoritos</p></button>
+						</div>
+					</div>
+				</li>
+				{/each}
+			</ul>
+				
 			{:else}
-				<p>Aquí se mostrarán las canciones favoritas.</p>
+				<p>Aquí se mostrarán los animes favoritos.</p>
 			{/if}
+				{:else}
+				{#if canciones.length > 0}
+					<!-- <ThemeCard {...canciones}/> -->
+					{#each canciones as cancion }
+						<ThemeCard {...cancion}/>
+					{/each}
+					<YoutubePlayer/>
+				{:else}
+				<p>Aquí se mostrarán las canciones favoritas.</p>
+				{/if}
+				{/if}
 		</section>
 	</div>
 	
@@ -177,21 +237,122 @@
 		color: var(--color-accent);
 		border-bottom-color: var(--color-accent);
 	}
-	.log-out{
-		position: absolute;
-		right: 20px;
-		top: 20px;
-		color: blacks;
-		background-color: white;
-		transition: all 300ms ease-in-out;
-		padding: 5px 10px;
-		border-radius: 8px;
-		border: 3px solid #ff4d4d;
-	}
-	.log-out:hover{
-		color: #ff4d4d;
-		background-color: black;
-	}
+	/* --- Botón de Logout Mejorado --- */
+.log-out {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border: 2px solid #ff4d4d;
+  color: #ff4d4d;
+  font-weight: 600;
+  text-transform: uppercase; /* Opcional, pero da buen look */
+  font-size: 0.8rem;
+  transition: all 300ms ease-in-out;
+  padding: 8px 12px; /* Padding más balanceado */
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: black;
+}
+
+.log-out:hover {
+  background-color: #ff4d4d; /* Se rellena al hacer hover */
+  color: white; /* Texto se vuelve blanco */
+  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+}
+
+/* --- Lista de Animes Favoritos Mejorada --- */
+.favorites-animes-list {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Espacio limpio entre elementos */
+}
+
+.favorites-animes-list-elements {
+  margin: 0; /* Quita el margen anterior */
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  border-radius: 8px; 
+  overflow: hidden; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.favorites-animes-list-elements:hover {
+  transform: translateY(-3px);
+  
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.favorites-animes-list-imgs {
+  width: 90px;
+  height: 130px;
+  object-fit: cover;
+  /* Evita que la imagen se encoja */
+  flex-shrink: 0;
+}
+
+.favorites-animes-list-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+}
+
+.favorites-animes-list-content h3 {
+  font-size: 1.5rem;
+  margin: 0; /* Resetea margen */
+}
+
+.favorites-animes-list-content-down {
+  display: flex;
+  align-items: center;
+  /* Separa "Ver Detalles" de "Borrar" */
+  justify-content: space-between;
+  margin-top: 1rem; /* Espacio desde el título */
+}
+
+/* Estilo para el enlace "Ver Detalles" */
+.favorites-animes-list-content-down a {
+  font-weight: 600;
+  color: var(--color-accent); /* Usa el color principal de tu app */
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.favorites-animes-list-content-down a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo mejorado para el botón "Borrar" */
+.favorites-delete-btn {
+  /* Quita estilos de botón feos */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #ff4d4d;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none; /* Quita el underline feo */
+  transition: opacity 0.2s ease;
+}
+
+.favorites-delete-btn p {
+  color: inherit; /* Hereda el color rojo del botón */
+  font-weight: inherit; /* Hereda el peso del botón */
+  font-size: inherit; /* Hereda el tamaño del botón */
+  margin: 0;
+  padding: 0;
+}
+
+.favorites-delete-btn:hover {
+  opacity: 0.7; /* Un hover sutil */
+}
+
 	@media (width < 800px) {
 		.banner {
 			flex-direction: column;
@@ -247,5 +408,11 @@
 			padding: 0 1rem;
 			margin-top: 70px;
 		}
+		.favorites-animes-list-content h3{
+		font-size: 1.4rem;
+	}
+		.favorites-delete-btn p{
+		font-size: 0.875rem;
+	}
 	}
 </style>

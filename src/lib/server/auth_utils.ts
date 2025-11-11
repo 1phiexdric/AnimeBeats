@@ -3,11 +3,11 @@ import { env } from "$env/dynamic/private";
 
 
 const secret = env.JWT_SECRET!
-export function generateToken(email: string){
+export function generateToken(email: string, time: any){
     return jsonwebtoken.sign(
         { email }, 
         secret, 
-        { expiresIn: '1h' }
+        { expiresIn: time }
     );
 }
 

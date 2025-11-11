@@ -1,8 +1,9 @@
 <script lang="ts">
   import { playerStore } from "$lib/store/playerStore";
 
-  let { titulo, numero, enlace_youtube, artista, episodios, version } =
-    $props();
+  let { titulo, numero, enlace_youtube, artista, episodios, version, anime } =
+  
+  $props();
   function playTheme(id: any) {
     if (id) {
       playerStore.playVideo(id);
@@ -25,9 +26,15 @@
       <i class="fa-solid fa-play"></i>
     </button>
     <div class="text-content">
-      <h3 translate="no" class="oswald">{titulo} - OP:{numero}</h3>
+      <h3 translate="no" class="oswald">{titulo}{numero? ` - OP:${numero}`: ""}</h3>
       <p class="metadata artist" translate="no">{artista}</p>
+      {#if anime}
+        <p class="metadata anime" translate="no">Anime: {anime}</p>
+      {/if}
+      {#if episodios}
       <p class="metadata">Episodios: {episodios}</p>
+        
+      {/if}
       {#if version}
         <p class="metadata">version: {version}</p>
       {/if}
