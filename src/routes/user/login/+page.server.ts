@@ -38,9 +38,9 @@ export const actions = {
         action: "login",
       });
     }
-    
+    let user
     try {
-      const user = await collection.findOne({ email: result.data.email });
+       user = await collection.findOne({ email: result.data.email });
       if (!user) {
         return fail(401, {
           data,
@@ -85,7 +85,7 @@ export const actions = {
         action: "login",
       });
     }
-    redirect(303, "/");
+    redirect(303, `/user/${user._id}`);
     return { success: true, action: "login" };
   },
   register: async ({ request, cookies }) => {
@@ -115,21 +115,27 @@ export const actions = {
         create_at: new Date()
       });
       const email = data.email.toString()
-      const token = generateToken(email)
+      const accessToken = generateToken(email, '15m')
+      const refreshToken = generateToken(email, '30d')
     
-    cookies.set('sessionid', token, { 
+    cookies.set('accessToken', accessToken, { 
       path: '/',
       secure: isProduction,
-      // en movil es necesario ya que require mas seguridad, solo acepta https
     sameSite: isProduction ? 'lax' : false,
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 15*60,
   });
-
+    cookies.set('refreshToken', refreshToken, { 
+      path: '/',
+      secure: isProduction,
+    sameSite: isProduction ? 'lax' : false,
+    maxAge: 30 * 24 * 60 * 60,
+  });
+    
     } catch (error) {
       
       return fail(500, { message: "No se pudo crear el usuario" });
     }
-    redirect(303, '/')
+    redirect(303, `/user/${data.username}`);
     return {
       success: true,
       message: "Registrado con exito",

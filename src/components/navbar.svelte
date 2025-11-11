@@ -49,7 +49,7 @@
   {:else}
   <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}} href='/user/{$userStore._id}'>
 <img src="/user.jpg" alt="logo de la pagina">
-<span>{$userStore.username}</span>
+<span style="overflow-wrap: break-word;">{$userStore.username}</span>
 </a>
     {/if}
   </div>

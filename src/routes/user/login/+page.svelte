@@ -1,63 +1,66 @@
 <script lang="ts">
+  import { userStore } from "$lib/store/userStore";
+  // svelte/sveltekit
+  import { fade } from "svelte/transition";
+  import { enhance, applyAction } from "$app/forms";
+  import { invalidateAll } from "$app/navigation";
+  import type { SubmitFunction } from "@sveltejs/kit";
 
-    // svelte/sveltekit
-    import { fade } from "svelte/transition";
-    import { enhance, applyAction } from '$app/forms';
-    import { invalidateAll } from "$app/navigation";
-    import type {SubmitFunction} from '@sveltejs/kit';
+  import * as z from "zod";
+  let { form } = $props();
 
-    import * as z from 'zod';
-    let { form }= $props();
-
-    
   let isLogin = $state(true);
   let showPassword = $state(false);
-  let password: any = $state('')
+  let password: any = $state("");
   function toggleForm() {
     isLogin = !isLogin;
   }
   function togglePasswordVisibility() {
     showPassword = !showPassword;
   }
-  
+  const handleLog: SubmitFunction = () => {
+
+    return async ({ result }) => {
+          await invalidateAll();
+          await applyAction(result);
+			}
+        
+  };
 </script>
+
 <div class="main">
-    <h1 class="title oswald">AnimeBeats</h1>
-    <div class="main-form">
-  <h2 class="oswald">{isLogin ? "Log in" : "Registro"}</h2>
-  <form method="post"
-  action={isLogin? '?/login':'?/register'} use:enhance={()=>{
-    console.log(form);
-    return async({result})=>{
-      await invalidateAll()
-      await applyAction(result)
-		
-    }
-  }}>
-    {#if !isLogin}
-      <label for="username" transition:fade>Nombre de usuario</label>
-      <input type="text" id="username" name="username" transition:fade/>
-      {#if form?.errors?.username && form.action === 'register'}
-        <p class="error-message">{form.errors.username[0]}</p>
+  <h1 class="title oswald">AnimeBeats</h1>
+  <div class="main-form">
+    <h2 class="oswald">{isLogin ? "Log in" : "Registro"}</h2>
+    <form
+      method="post"
+      action={isLogin ? "?/login" : "?/register"}
+      use:enhance={handleLog}
+    >
+      {#if !isLogin}
+        <label for="username" transition:fade>Nombre de usuario</label>
+        <input type="text" id="username" name="username" transition:fade />
+        {#if form?.errors?.username && form.action === "register"}
+          <p class="error-message">{form.errors.username[0]}</p>
+        {/if}
       {/if}
-    {/if}
-    <label for="email"> Email </label>
-    <input type="email" name="email" id="email"/>
-    {#if form?.errors?.email}
+      <label for="email"> Email </label>
+      <input type="email" name="email" id="email" />
+      {#if form?.errors?.email}
         <p class="error-message">{form.errors.email[0]}</p>
       {/if}
-    <label for="password"> password </label>
+      <label for="password"> password </label>
 
-    <div class="input-password-container">
-      <input
-        type={showPassword ? "text" : "password"}
-        name="password"
-        id="password"
-        bind:value={password}
-      />
-      <button type="button" onclick={togglePasswordVisibility}>👁</button>
-    </div>
-{#if form?.errors?.password}
+      <div class="input-password-container">
+        <input
+          type={showPassword ? "text" : "password"}
+          name="password"
+          id="password"
+          bind:value={password}
+        />
+        <button type="button" onclick={togglePasswordVisibility}>👁</button>
+      </div>
+      {#if form?.errors?.password}
         <p class="error-message">{form.errors.password[0]}</p>
       {/if}
       <!-- <div class="remember-container">
@@ -66,37 +69,42 @@
       Recordarme
               </label>
       </div> -->
-    <button class="submit" type="submit" formaction={isLogin? '?/login':'?/register'}>{isLogin ? "log in" : "Sign up"}</button>
+      <button
+        class="submit"
+        type="submit"
+        formaction={isLogin ? "?/login" : "?/register"}
+        >{isLogin ? "log in" : "Sign up"}</button
+      >
     </form>
     {#if form?.message}
       <p class="error-message">{form.message}</p>
     {/if}
-  <p id="toggle-p">
-    {isLogin ? "No" : "Ya"} tienes cuenta?
-    <button onclick={toggleForm} id="toggle-btn"
-      >{isLogin ? "Registrarte" : "Log in"}</button
-    >
-  </p>
-</div>
+    <p id="toggle-p">
+      {isLogin ? "No" : "Ya"} tienes cuenta?
+      <button onclick={toggleForm} id="toggle-btn"
+        >{isLogin ? "Registrarte" : "Log in"}</button
+      >
+    </p>
+  </div>
 </div>
 
 <style>
-    .main{
-        padding: 2rem 3rem;
+  .main {
+    padding: 2rem 3rem;
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  @media (width< 800px) {
+    .main {
+      padding: 1rem 1.5rem;
     }
-    .title{
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    @media(width< 800px){
-        .main{
-            padding: 1rem 1.5rem;
-        }
-    }
-    /*
+  }
+  /*
     Form
     */
-    .main-form {
+  .main-form {
     background-color: var(--color-background-card);
     padding: 20px;
     width: 60%;
@@ -124,7 +132,7 @@
   .submit:hover {
     transform: scale(1.05);
   }
-  .error-message{
+  .error-message {
     color: #ff4d4d;
     font-size: 0.875rem;
     margin-top: -5px;
@@ -142,7 +150,6 @@
     color: green;
   }
 
-  
   input:not(input[type="checkbox"]):not(#password) {
     background-color: white;
     width: 95%;
@@ -154,14 +161,14 @@
     box-sizing: border-box; /* Añadido para que el padding no afecte el ancho */
   }
 
-    .input-password-container {
+  .input-password-container {
     width: 95%;
     margin: auto;
     margin-bottom: 10px; /* Para que coincida con los otros inputs */
     position: relative; /* Para posicionar el botón dentro de él */
   }
 
-    .input-password-container input {
+  .input-password-container input {
     background-color: white;
     width: 100%; /* Llena el contenedor */
     margin: 0; /* Sin margen */
@@ -171,7 +178,6 @@
     box-sizing: border-box; /* Importante */
   }
 
- 
   .input-password-container button {
     position: absolute;
     right: 8px;
@@ -184,7 +190,6 @@
     padding: 0 5px;
     color: #333; /* Color de ojo más sutil */
   }
-
 
   input:not(input[type="checkbox"]):focus,
   .input-password-container input:focus {
@@ -200,7 +205,7 @@
     .submit {
       width: 50%;
     }
-    .main-form{
+    .main-form {
       width: 100%;
     }
   }

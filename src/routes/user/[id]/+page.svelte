@@ -49,7 +49,7 @@
 			if(result.type === 'redirect'){
 				window.location.href = result.location;
 			}
-			userStore.set(null);
+			
 		}
 	}
 </script>
