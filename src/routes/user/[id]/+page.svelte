@@ -46,7 +46,7 @@
 <section class="main">
 	<div class="banner">
 		<form action="?/logout" method="post">
-		<button class="log-out"><i class="fa-solid fa-right-from-bracket"></i>
+		<button class="log-out" onclick={user store.set(null)}><i class="fa-solid fa-right-from-bracket"></i>
 		log out</button></form>
 		<div class="user-img-container">
 			<img src="/user.jpg" alt="Foto de perfil del usuario" />
