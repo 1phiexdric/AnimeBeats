@@ -1,7 +1,12 @@
 <script lang="ts">
-    import { enhance, applyAction } from '$app/forms';
-    import * as z from 'zod';
+
+    // svelte/sveltekit
     import { fade } from "svelte/transition";
+    import { enhance, applyAction } from '$app/forms';
+    import { invalidateAll } from "$app/navigation";
+    import type {SubmitFunction} from '@sveltejs/kit';
+
+    import * as z from 'zod';
     let { form }= $props();
 
     
@@ -24,7 +29,9 @@
   action={isLogin? '?/login':'?/register'} use:enhance={()=>{
     console.log(form);
     return async({result})=>{
+      await invalidateAll()
       await applyAction(result)
+		
     }
   }}>
     {#if !isLogin}

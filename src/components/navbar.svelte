@@ -8,7 +8,7 @@
     showSearch = !showSearch;
   }
   
-  let isUserAuthenticated: boolean = false
+  
 </script>
 
 <div class="main">
