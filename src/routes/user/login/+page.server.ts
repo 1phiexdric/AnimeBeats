@@ -115,16 +115,22 @@ export const actions = {
         create_at: new Date()
       });
       const email = data.email.toString()
-      const token = generateToken(email)
+      const accessToken = generateToken(email, '15m')
+      const refreshToken = generateToken(email, '30d')
     
-    cookies.set('sessionid', token, { 
+    cookies.set('accessToken', accessToken, { 
       path: '/',
       secure: isProduction,
-      // en movil es necesario ya que require mas seguridad, solo acepta https
     sameSite: isProduction ? 'lax' : false,
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 15*60,
   });
-
+    cookies.set('refreshToken', refreshToken, { 
+      path: '/',
+      secure: isProduction,
+    sameSite: isProduction ? 'lax' : false,
+    maxAge: 30 * 24 * 60 * 60,
+  });
+    
     } catch (error) {
       
       return fail(500, { message: "No se pudo crear el usuario" });
