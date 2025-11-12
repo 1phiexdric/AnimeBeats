@@ -1,5 +1,8 @@
-import type { PageLoad } from './$types';
+import type { PageServerLoad} from './$types';
 import { playerStore } from '$lib/store/playerStore';
+import { getFavoritesCollection } from '$lib/server/mongo';
+
+
 const query = `
 query ($id: Int) {
   Media (id: $id, type: ANIME) {
@@ -31,12 +34,12 @@ query ($id: Int) {
 
 const url = 'https://graphql.anilist.co';
 
-export const load: PageLoad = async ({ params, fetch }) => {
+export const load: PageServerLoad = async ({ params, fetch, locals }) => {
   playerStore.reset()
   const { id } = params;
 
   try {
-    // --- Fetch 1: Obtener los detalles principales del anime de AniList ---
+    // 1: Obtener los detalles principales del anime de AniList ---
     const options = {
       method: 'POST',
       headers: {
@@ -55,7 +58,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
       throw new Error('Anime details not found in AniList response');
     }
 
-    // --- Fetch 2: Obtener los temas de anime de nuestra propia API de MongoDB ---
+    // 2: Obtener los temas de anime de nuestra propia API de MongoDB ---
     let animeThemes = { openings: [], endings: [] }; // Default value
     const themeResponse = await fetch(`/anime/${id}/themes`);
     if (themeResponse.ok) {
@@ -65,9 +68,19 @@ export const load: PageLoad = async ({ params, fetch }) => {
       console.warn(`Themes not found for anime ID ${id} (status: ${themeResponse.status}), proceeding without them.`);
     }
 
-    // --- Devolver ambos conjuntos de datos combinados ---
+    // 3: ver si al usuario le gusta este anime ---
+    
+    const userId = locals.user?._id
+    let isliked = false;
+    if(userId){
+      const collection = await getFavoritesCollection()
+      const favoriteEntry = await collection.findOne({ userId: userId, animes: {$in: [Number(id)]}}, { projection: { _id: 1 } });
+      isliked = (favoriteEntry !== null)
+    }
+    
     return {
       id,
+      isliked,
       animeDetails,
       animeThemes
     };

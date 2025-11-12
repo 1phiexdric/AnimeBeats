@@ -13,7 +13,7 @@
   // utils
   import { scrollToTop } from '$lib/layout_utils';
   export let data;
-  $: ({ animeDetails, animeThemes, id } = data);
+  $: ({ animeDetails, animeThemes, id, isliked} = data);
   
   
 
@@ -31,9 +31,9 @@
   function goBack(){
     history.back()
   }
-  let isliked: boolean = false
+  let islikedbtn = isliked;
   async function likeAnime(){
-    isliked = !isliked
+    islikedbtn = !islikedbtn
     const addtoBd = await fetch(`/api/fav/${$userStore?._id}/animes/${id}`, {
       method: 'PUT',
       headers: {
@@ -53,7 +53,7 @@
     <i class="fa-solid fa-backward"></i>
   </button>
   {#if $userStore}
-    <button class="btn-de-arriba btn-like {isliked? 'active': ''}" onclick={likeAnime}>
+    <button class="btn-de-arriba btn-like {isliked || islikedbtn ? 'active': ''}" onclick={likeAnime}>
     <i class="fa-solid fa-heart"></i>
   </button>
   {/if}
