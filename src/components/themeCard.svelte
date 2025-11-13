@@ -1,9 +1,15 @@
 <script lang="ts">
+  // stores
   import { playerStore } from "$lib/store/playerStore";
+  import {userStore} from "$lib/store/userStore";
 
-  let { titulo, numero, enlace_youtube, artista, episodios, version, anime } =
-  
-  $props();
+  // svelte/sveltekit
+  import { slide } from "svelte/transition";
+ 
+
+  let { titulo, numero, enlace_youtube, artista, episodios, version,
+    anime, onDelete } = $props();
+ 
   function playTheme(id: any) {
     if (id) {
       playerStore.playVideo(id);
@@ -15,9 +21,38 @@
     const match = url.match(regex);
     return match ? match[1] : null;
   }
+  let btnLikeActive = $state(false);
+  async function liketheme(){
+    btnLikeActive = !btnLikeActive
+    const songToAdd = {
+      titulo,
+      artista,
+      enlace_youtube,
+      anime
+    }
+    const response = fetch(`/api/fav/songs/${$userStore?._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(songToAdd)
+    })
+   onDelete()
+  }
+  async function deletetheme(){
+    const response = fetch(`/api/fav/songs/${$userStore?._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify({enlace_youtube})
+    })
+    // return (await response).json()
+    onDelete() // Llamar a la función pasada desde el padre para actualizar la UI
+  }
 </script>
 
-<article>
+<article out:slide={{ duration: 300 }}>
   <div class="main-content">
     <button class="play-button" aria-label="Play theme" onclick={()=>{
         const videoId = extractYouTubeVideoId(enlace_youtube)
@@ -40,17 +75,29 @@
       {/if}
     </div>
   </div>
-  {#if enlace_youtube}
+  <div class="btns-container">
+
+    {#if $userStore && episodios}
+    <button class="interactive btn-like {btnLikeActive ? "active" :""}" aria-label="like theme" onclick={liketheme}>
+      <i class="fa-solid fa-heart"></i>
+    </button>
+    {:else if $userStore && !episodios}
+    <button class="interactive btn-trash" aria-label="delete theme from favorites" onclick={deletetheme}>
+      <i class="fa-solid fa-trash"></i>
+    </button>
+    {/if}
+    {#if enlace_youtube}
     <a
-      href={enlace_youtube}
-      target="_blank"
-      class="youtube-link"
-      aria-label="Watch on YouTube"
-      title="go to youtube"
+    href={enlace_youtube}
+    target="_blank"
+    class="interactive youtube-link"
+    aria-label="Watch on YouTube"
+    title="go to youtube"
     >
-      <i class="fa-brands fa-youtube"></i>
-    </a>
+    <i class="fa-brands fa-youtube"></i>
+  </a>
   {/if}
+</div>
 </article>
 
 <style>
@@ -128,7 +175,13 @@
     font-style: italic;
   }
 
-  .youtube-link {
+  .btns-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .btn-like, .youtube-link, .btn-trash {
     color: var(--color-text-secondary);
     font-size: 1.8em;
     text-decoration: none;
@@ -140,5 +193,8 @@
   .youtube-link:hover {
     color: #ff0000; /* Rojo de YouTube */
     transform: scale(1.1);
+  }
+  .btn-like:hover, .btn-like.active {
+    color: var(--color-accent);
   }
 </style>

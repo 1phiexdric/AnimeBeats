@@ -19,7 +19,7 @@
 	let activeTab: 'animes' | 'songs' = $state('animes');
 	let fecha: Date | string = $state("")
 	let {data } = $props() as {data: PageData}
-	let { canciones, user} = data
+	let { user} = data
 	if(user?.create_at){
 		fecha = new Date(user.create_at)
 		fecha = fecha.toLocaleDateString('es', {
@@ -29,6 +29,7 @@
 		})
 	}
 	let animes= $state(data.animes)
+	let canciones = $state(data.canciones)
 	onDestroy(()=>{
 		playerStore.reset()
 	})
@@ -51,6 +52,10 @@
 			}
 			
 		}
+	}
+	// Eliminar canción de la UI después de borrarla
+	function deleteSongUi(enlace: string){// props para themeCard
+		canciones = canciones.filter((c)=> c.enlace_youtube != enlace)
 	}
 </script>
 
@@ -116,7 +121,7 @@
 				{#if canciones.length > 0}
 					<!-- <ThemeCard {...canciones}/> -->
 					{#each canciones as cancion }
-						<ThemeCard {...cancion}/>
+						<ThemeCard {...cancion} onDelete={()=>deleteSongUi(cancion.enlace_youtube)}/>
 					{/each}
 					<YoutubePlayer/>
 				{:else}

@@ -18,13 +18,10 @@
   
 
   onMount(() => {
-    // en la primera carga forzamos arriba
     scrollToTop('auto');
   });
 
   afterNavigate(() => {
-    // cuando navegues internamente también forzamos arriba (usa smooth si quieres)
-    // se usa setTimeout 0 para garantizar que el DOM esté renderizado
     setTimeout(() => scrollToTop('smooth'), 0);
   });
 
@@ -104,7 +101,7 @@
       <h3>Openings</h3>
       {#if animeThemes.openings.length >0}
       {#each animeThemes.openings as op}
-      <ThemeCard {...(op as any)} />
+      <ThemeCard {...(op as any)} anime={animeDetails.title.romaji}/>
       {/each}
       {:else}
       <p>No openings found.</p>
@@ -114,7 +111,7 @@
       <h3>Endings</h3>
       {#if animeThemes.endings.length > 0}
       {#each animeThemes.endings as ed}
-      <ThemeCard {...(ed as any)} />
+      <ThemeCard {...(ed as any)} anime={animeDetails.title.romaji}/>
       {/each}
       {:else}
       <p>No endings found.</p>
