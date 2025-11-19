@@ -60,6 +60,7 @@
     
     onDestroy(() => {
         (player as any)?.destroy();
+		playerStore.reset()
     });
 </script>
 
