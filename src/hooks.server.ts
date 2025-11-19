@@ -40,24 +40,16 @@ export const handle: Handle = async ({ event, resolve }) => {
   const collection = await collectionPromise;
   const accessToken = event.cookies.get("accessToken");
   const refreshToken = event.cookies.get("refreshToken");
+  let user: MongoUser | null = null;
   if (accessToken) {
     try {
       const payload = verificarToken(accessToken) as JwtPayload;
-      const user: MongoUser = await collection.findOne(
+      user = await collection.findOne(
         { email: payload.email },
         { projection: { password: 0 } }
       );
 
-      if (user) {
-          event.locals.user = {
-            _id: user._id.toString(),
-            email: user.email,
-            username: user.username,
-            create_at: user.create_at,
-          };
-          return await resolve(event);
-        
-      }
+    
     } catch (err) {
       console.log("Access Token expirado o inválido, intentando refresh...");
     }
@@ -66,12 +58,12 @@ export const handle: Handle = async ({ event, resolve }) => {
     try {
       const payloadRefresh = verificarToken(refreshToken);
       if (payloadRefresh && typeof payloadRefresh === "object") {
-        const user = await collection.findOne(
+        const dbUser = await collection.findOne(
           { email: payloadRefresh.email },
           { projection: { password: 0 } }
         );
-        if (user) {
-          const newAccessToken = generateToken(user.email, "15m");
+        if (dbUser) {
+          const newAccessToken = generateToken(dbUser.email, "15m");
 
           event.cookies.set("accessToken", newAccessToken, {
             path: "/",
@@ -81,13 +73,7 @@ export const handle: Handle = async ({ event, resolve }) => {
             maxAge: 15 * 60,
           });
 
-          event.locals.user = {
-          _id: user._id.toString(),
-          email: user.email,
-          username: user.username,
-          create_at: user.create_at,
-        };
-          return await resolve(event);
+          user = dbUser;
         }
       }
     } catch (err) {
@@ -97,6 +83,15 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
   }
 
- event.locals.user = undefined;
+ if (user) {
+    event.locals.user = {
+      _id: user._id.toString(),
+      email: user.email,
+      username: user.username,
+      create_at: user.create_at,
+    };
+  } else {
+    event.locals.user = undefined;
+  }
   return await resolve(event);
 };
