@@ -61,39 +61,39 @@ export const handle: Handle = async ({ event, resolve }) => {
     } catch (err) {
       console.log("Access Token expirado o inválido, intentando refresh...");
     }
-    if (refreshToken) {
-      try {
-        const payloadRefresh = verificarToken(refreshToken);
-        if (payloadRefresh && typeof payloadRefresh === "object") {
-          const user = await collection.findOne(
-            { email: payloadRefresh.email },
-            { projection: { password: 0 } }
-          );
-          if (user) {
-            const newAccessToken = generateToken(user.email, "15m");
+  }
+  if (refreshToken) {
+    try {
+      const payloadRefresh = verificarToken(refreshToken);
+      if (payloadRefresh && typeof payloadRefresh === "object") {
+        const user = await collection.findOne(
+          { email: payloadRefresh.email },
+          { projection: { password: 0 } }
+        );
+        if (user) {
+          const newAccessToken = generateToken(user.email, "15m");
 
-            event.cookies.set("accessToken", newAccessToken, {
-              path: "/",
-              secure: isProduction,
-              httpOnly: true,
-              sameSite: isProduction ? "lax" : false,
-              maxAge: 15 * 60,
-            });
+          event.cookies.set("accessToken", newAccessToken, {
+            path: "/",
+            secure: isProduction,
+            httpOnly: true,
+            sameSite: isProduction ? "lax" : false,
+            maxAge: 15 * 60,
+          });
 
-            event.locals.user = {
-            _id: user._id.toString(),
-            email: user.email,
-            username: user.username,
-            create_at: user.create_at,
-          };
-            return await resolve(event);
-          }
+          event.locals.user = {
+          _id: user._id.toString(),
+          email: user.email,
+          username: user.username,
+          create_at: user.create_at,
+        };
+          return await resolve(event);
         }
-      } catch (err) {
-        event.cookies.delete("accessToken", { path: "/" });
-        event.cookies.delete("refreshToken", { path: "/" });
-        console.log("Refresh Token inválido, deslogueando.");
       }
+    } catch (err) {
+      event.cookies.delete("accessToken", { path: "/" });
+      event.cookies.delete("refreshToken", { path: "/" });
+      console.log("Refresh Token inválido, deslogueando.");
     }
   }
 
