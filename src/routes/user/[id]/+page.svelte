@@ -5,8 +5,8 @@
 	// Svelte/sveltekit
 	import { onDestroy } from "svelte";
 	import { slide } from 'svelte/transition';
-	import { enhance } from "$app/forms";
-
+	import { enhance,applyAction } from "$app/forms";
+	import { invalidateAll} from "$app/navigation";
 	// Stores
 	import { userStore } from "$lib/store/userStore";
 	import { playerStore } from "$lib/store/playerStore";
@@ -45,12 +45,10 @@
 		animes = animes.filter((anime) => anime.id != animeId);
 	}
 	const handleLogout : SubmitFunction =()=>{
-		return async({result})=>{
-			if(result.type === 'redirect'){
-				window.location.href = result.location;
+		return async ({ result }) => {
+          await invalidateAll();
+          await applyAction(result);
 			}
-			
-		}
 	}
 	// Eliminar canción de la UI después de borrarla
 	function deleteSongUi(enlace: string){// props para themeCard
