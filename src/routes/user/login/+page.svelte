@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { userStore } from "$lib/store/userStore";
   // svelte/sveltekit
   import { fade } from "svelte/transition";
   import { enhance, applyAction } from "$app/forms";
   import { invalidateAll } from "$app/navigation";
   import type { SubmitFunction } from "@sveltejs/kit";
 
-  import * as z from "zod";
+
+  
   let { form } = $props();
 
   let isLogin = $state(true);
@@ -63,12 +63,6 @@
       {#if form?.errors?.password}
         <p class="error-message">{form.errors.password[0]}</p>
       {/if}
-      <!-- <div class="remember-container">
-        <input type="checkbox" name="remember" id="remember-me">
-              <label for="remember-me" id="remenber-label">
-      Recordarme
-              </label>
-      </div> -->
       <button
         class="submit"
         type="submit"

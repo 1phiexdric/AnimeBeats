@@ -7,7 +7,9 @@
     // Lógica para mostrar el input de búsqueda
     showSearch = !showSearch;
   }
-  
+  function closeSearch() {
+    showSearch = false;
+  }
   
 </script>
 
@@ -26,11 +28,14 @@
   <hr />
   <nav>
     <ul>
-      <a href="/" onclick={()=>{showMenu = !showMenu}}><li><i class="fa-solid fa-house verde"></i>Inicio</li></a>
-      <li onclick={()=>{showSearchInput(); showMenu = !showMenu}}>
-        <i class="fa-solid fa-magnifying-glass verde"></i>Buscar
+     <li> <a href="/" onclick={()=>{showMenu = !showMenu}} class="nav-link"><i class="fa-solid fa-house verde"></i>Inicio</a></li>
+      <li >
+        <button onclick={()=>{showSearchInput(); showMenu = !showMenu}} class="nav-link">
+
+          <i class="fa-solid fa-magnifying-glass verde"></i>Buscar
+        </button>
       </li>
-      <li translate="no" onclick={()=>{showMenu = !showMenu}}><a href="/about"><i class="fa-solid fa-circle-info verde"></i>Acerca de</a></li>
+      <li translate="no" ><a href="/about" class="nav-link" onclick={()=>{showMenu = !showMenu}}><i class="fa-solid fa-circle-info verde"></i>Acerca de</a></li>
       <!-- <li><i class="fa-solid fa-star verde"></i>Favoritos</li>
       <li><i class="fa-solid fa-list"></i>Mi lista</li>
       <li><i class="fa-solid fa-music"></i>OPs Favoritos</li> -->
@@ -38,9 +43,6 @@
   </nav>
   <div class="botton-content">
     <div class="gtranslate_wrapper"></div>
-    <!--TODO
-    * poner /user en el href
-    -->
     {#if !$userStore}
       <a class="tu_perfil" onclick={()=>{showMenu = !showMenu}} href='/user/login'>
     <img src="/user.jpg" alt="logo de la pagina">
@@ -54,9 +56,9 @@
     {/if}
   </div>
 </aside>
-<!-- Aquí iría el input de búsqueda -->
-<Search {showSearch} on:close={() => (showSearch = false)} />
-
+{#if showSearch}
+<Search {closeSearch} on:close={() => (showSearch = false)} />
+{/if}
 <style>
   .main {
     display: none; /* Oculto por defecto */
@@ -102,12 +104,17 @@
     padding: 0;
     margin: 0;
   }
-  nav ul a {
+  .nav-link{
+padding: 0.8rem 1rem;
+width: 100%;
+text-align: left;
+  }
+  nav ul a{
     text-decoration: none;
     color: inherit;
+    
   }
   nav ul li {
-    padding: 0.8rem 1rem;
     border-radius: 8px;
     transition:
       background-color 0.3s ease,

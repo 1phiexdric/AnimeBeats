@@ -1,13 +1,9 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  
 
-  let { showSearch } = $props();
-  const dispatch = createEventDispatcher();
+  let { closeSearch } = $props();
   let searchterm = $state("");
   let searchResults: Array<any> = $state([]);
-  function closeSearch() {
-    dispatch("close");
-  }
   let debounceTimer: any;
   function debouncing() {
     clearTimeout(debounceTimer);
@@ -25,12 +21,11 @@
   }
 </script>
 
-{#if showSearch}
   <div class="search-container">
     <div class="container">
       <div>
         <button onclick={closeSearch}
-          ><i class="fa-solid fa-arrow-left"></i></button
+          aria-label="cerrar boton de busqueda"><i class="fa-solid fa-arrow-left"></i></button
         >
         <div class="input-container">
           <input
@@ -56,7 +51,6 @@
       </ul>
     </div>
   </div>
-{/if}
 
 <style>
   .search-container {

@@ -1,9 +1,14 @@
 <script lang="ts">
-  import AnimeCard from "../components/animeCard.svelte";
+  // svelte
   import { onMount } from "svelte";
-  import Loader from "../components/loader.svelte";
   import { fade } from "svelte/transition";
+
+  // components
+  import AnimeCard from "../components/animeCard.svelte";
+  import Loader from "../components/loader.svelte";
+  import SpinnerLoader from "../components/spinnerLoader.svelte";
   // export let data
+
   let animes: Array<Object> = $state([]);
   let selectedTipo: string = $state("todos");
   const loopArray = Array(12).fill(null);
@@ -35,8 +40,17 @@
     loadAnimeData();
   });
   let isloaded = $derived(animes.length > 0);
+  let isAnimepageLoading = $state(false);
+  function showSpinnerLoader(){
+    isAnimepageLoading = true;
+  }
 </script>
+{#if isAnimepageLoading}
+<div class="spinner-overlay" class:active={isAnimepageLoading}>
+  <SpinnerLoader />
 
+</div>
+{/if}
 <section>
   <div class="title-container">
     <h1 class="title oswald" translate="no">AnimeBeats</h1>
@@ -79,7 +93,7 @@ handleFilter('todos')
   <div class="animeCard-container">
     {#if isloaded}
       {#each animes as anime}
-        <AnimeCard {anime} />
+        <AnimeCard {anime} {showSpinnerLoader}/>
       {/each}
     {:else}
       {#each loopArray as _}
@@ -95,6 +109,24 @@ handleFilter('todos')
 </section>
 
 <style>
+   .spinner-overlay{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        background-color: rgb(0, 0, 0, 0.7);
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: all 0.9s ease;
+    }
+    .spinner-overlay.active{
+      opacity: 1;
+    }
   section {
     padding: 1rem 1.5rem; /* Ajustado para móviles */
   }
@@ -105,13 +137,13 @@ handleFilter('todos')
   }
 
 
-  /* Usando Grid para un layout más robusto */
+
   .animeCard-container {
     display: grid;
-    /* Crea columnas de mínimo 150px, y las ajusta para llenar el espacio */
+
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px; /* Espacio entre tarjetas */
-    justify-items: center; /* Centra las tarjetas en sus celdas */
+    justify-items: center; 
   }
 
   .filtros {

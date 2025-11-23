@@ -5,7 +5,7 @@
 	// Svelte/sveltekit
 	import { onDestroy } from "svelte";
 	import { slide } from 'svelte/transition';
-	import { applyAction, enhance } from "$app/forms";
+	import { enhance } from "$app/forms";
 
 	// Stores
 	import { userStore } from "$lib/store/userStore";
@@ -14,7 +14,6 @@
 	// components
 	import YoutubePlayer from "../../../components/youtubePlayer.svelte";
 	import ThemeCard from "../../../components/themeCard.svelte";
-  import { invalidateAll } from "$app/navigation";
 
 	let activeTab: 'animes' | 'songs' = $state('animes');
 	let fecha: Date | string = $state("")

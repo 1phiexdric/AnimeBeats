@@ -1,7 +1,8 @@
 <script>
- let {anime} = $props();
+ 
+ let {showSpinnerLoader, anime} = $props();
 </script>
-<a href="/anime/{anime.id}">
+<a href="/anime/{anime.id}" onclick={showSpinnerLoader}>
 <article>
     <figure>
         <img src={anime.coverImage.extraLarge} alt="portada del anime"/>
